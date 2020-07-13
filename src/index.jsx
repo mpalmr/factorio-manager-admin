@@ -1,13 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
+import './styles.scss';
 import createClient from './apollo';
-import App from './components/app';
+import Routes from './routes';
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
 		<ApolloProvider client={createClient()}>
-			<App />
+			<Routes />
 		</ApolloProvider>,
 		document.getElementById('root'),
 	);

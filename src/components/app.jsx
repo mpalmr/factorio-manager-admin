@@ -1,9 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Header from './header';
 
-function App() {
+function App({ children }) {
 	return (
-		<h1>Hi!</h1>
+		<>
+			<Header />
+			<main>
+				{children}
+			</main>
+		</>
 	);
 }
+
+App.propTypes = { children: PropTypes.node.isRequired };
 
 export default App;

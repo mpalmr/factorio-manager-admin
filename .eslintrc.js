@@ -18,8 +18,7 @@ module.exports = {
 		{
 			files: [
 				'.eslintrc.js',
-				'babel.config.js',
-				'webpack.config.js',
+				'*.config.js',
 			],
 			env: {
 				node: true,
