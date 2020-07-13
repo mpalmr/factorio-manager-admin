@@ -7,12 +7,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const base = {
 	context: path.resolve('src'),
-	entry: './index.js',
+	entry: './index.jsx',
 	output: {
 		path: path.resolve('dist'),
 		filename: 'main.js',
 	},
-	extensions: ['', '.js', '.jsx', '.json'],
+	resolve: { extensions: ['.js', '.jsx', '.json'] },
 	module: {
 		strictExportPresence: true,
 		rules: [
@@ -53,6 +53,7 @@ const base = {
 const environments = {
 	development: {
 		mode: 'development',
+		devServer: { open: true },
 	},
 
 	production: {

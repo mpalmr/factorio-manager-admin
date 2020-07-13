@@ -19,7 +19,11 @@
     "url": "https://github.com/mpalmr/factorio-manager-admin/issues"
   },
   "homepage": "https://github.com/mpalmr/factorio-manager-admin#readme",
-  "dependencies": {},
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",

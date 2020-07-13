@@ -8,6 +8,7 @@ module.exports = {
 	rules: {
 		indent: [2, 'tab'],
 		'no-tabs': 0,
+		'react/jsx-indent': 0,
 		'arrow-parens': [2, 'as-needed'],
 		'no-console': 0,
 		'func-names': 0,
