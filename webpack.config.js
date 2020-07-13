@@ -7,7 +7,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const base = {
 	context: path.resolve('src'),
-	entry: './index.jsx',
+	entry: [
+		'bootstrap/dist/css/bootstrap.min.css',
+		'./index.jsx',
+	],
 	output: {
 		path: path.resolve('dist'),
 		filename: 'main.js',
@@ -25,13 +28,15 @@ const base = {
 				}],
 			},
 			{
-				test: /\.s?css$/,
+				test: /\.s(c|a)ss$/,
+				exclude: /node_modules/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					{
 						loader: require.resolve('css-loader'),
 						options: {
 							sourceMap: true,
+							importLoaders: 1,
 							localsConvention: 'camelCase',
 							modules: { localIdentName: '[path][name]_[local]--[hash:base64:5]' },
 						},
@@ -39,6 +44,19 @@ const base = {
 					{
 						loader: require.resolve('sass-loader'),
 						options: { sourceMap: true },
+					},
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					{
+						loader: require.resolve('css-loader'),
+						options: {
+							sourceMap: true,
+							importLoaders: 1,
+						},
 					},
 				],
 			},
