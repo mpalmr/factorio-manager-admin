@@ -13,9 +13,9 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
 	const sessionToken = localStorage.getItem('sessionToken');
 	return {
-		headers: {
+		headers: !sessionToken ? headers : {
 			...headers,
-			Authorization: sessionToken,
+			Authorization: `Bearer ${sessionToken}`,
 		},
 	};
 });

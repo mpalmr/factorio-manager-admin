@@ -71,7 +71,10 @@ const base = {
 const environments = {
 	development: {
 		mode: 'development',
-		devServer: { open: true },
+		devServer: {
+			open: true,
+			historyApiFallback: { index: 'index.html' },
+		},
 	},
 
 	production: {
