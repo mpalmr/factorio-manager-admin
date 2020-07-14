@@ -1,8 +1,15 @@
 import React from 'react';
 import { useLazyQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Formik, Field } from 'formik';
-import { Container, Button, Form } from 'react-bootstrap';
+import { Formik } from 'formik';
+import {
+	Container,
+	Row,
+	Col,
+	Button,
+	Form,
+} from 'react-bootstrap';
+import TextField from './form/text-field';
 
 const LOGIN_QUERY = gql`
 	mutation Login($username: String!, $password: String!) {
@@ -11,6 +18,7 @@ const LOGIN_QUERY = gql`
 `;
 
 function Login() {
+	console.log('ay');
 	const [login, query] = useLazyQuery(LOGIN_QUERY, {
 		onCompleted({ authToken }) {
 			localStorage.setItem('authToken', authToken);
@@ -19,22 +27,54 @@ function Login() {
 
 	const disabled = query.called && query.loading;
 
-	function handleSubmit(values) {
-		return login({ variables: values });
+	function validate(values) {
+		const errors = {};
+		if (!values.username) errors.username = 'Required';
+		if (!values.password) errors.password = 'Required';
+		return errors;
 	}
 
 	return (
 		<Container>
-			<Formik initialValues={{ username: '', password: '' }} onSubmit={handleSubmit}>
-				<Form.Group controlId="login-username">
-					<Form.Label>Username</Form.Label>
-					<Field as={Form.Control} name="username" type="text" disabled={disabled} />
-				</Form.Group>
-				<Form.Group controlId="login-password">
-					<Form.Label>Password</Form.Label>
-					<Field as={Form.Control} name="password" type="password" disabled={disabled} />
-				</Form.Group>
-				<Button type="submit" variant="primary" size="lg" disabled={disabled} block>Login</Button>
+			<Formik
+				initialValues={{ username: '', password: '' }}
+				validate={validate}
+				onSubmit={values => login({ variables: values })}
+			>
+				{({ touched, errors, handleSubmit }) => (
+					<Form noValidate onSubmit={handleSubmit}>
+						<Row>
+							<Col sm={6}>
+								<TextField
+									id="login-username"
+									name="username"
+									label="Username"
+									disabled={disabled}
+									touched={touched}
+									error={errors.username}
+								/>
+							</Col>
+							<Col sm={6}>
+								<TextField
+									id="login-password"
+									name="password"
+									label="Password"
+									type="password"
+									disabled={disabled}
+									touched={touched}
+									error={errors.password}
+								/>
+							</Col>
+						</Row>
+						<Row>
+							<Col>
+								<Button type="submit" variant="primary" size="lg" disabled={disabled} block>
+									Login
+								</Button>
+							</Col>
+						</Row>
+					</Form>
+				)}
 			</Formik>
 		</Container>
 	);

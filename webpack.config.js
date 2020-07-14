@@ -73,7 +73,7 @@ const environments = {
 		mode: 'development',
 		devServer: {
 			open: true,
-			historyApiFallback: { index: 'index.html' },
+			historyApiFallback: true,
 		},
 	},
 

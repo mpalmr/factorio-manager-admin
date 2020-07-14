@@ -13,6 +13,7 @@ module.exports = {
 		'no-console': 0,
 		'func-names': 0,
 		'consistent-return': 0,
+		'react/jsx-indent-props': 0,
 	},
 	overrides: [
 		{
