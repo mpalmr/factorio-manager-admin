@@ -15,7 +15,7 @@ export default function createClient() {
 	cache.writeQuery({
 		query: gql`
 			query IsLoggedIn {
-				isloggedIn @client
+				isLoggedIn @client
 			}
 		`,
 		data: {	isLoggedIn: !!authToken },
@@ -24,10 +24,10 @@ export default function createClient() {
 	return new ApolloClient({
 		typeDefs,
 		cache,
-		uri: 'http://localhost:4000/',
+		uri: 'http://localhost:4000/api',
 		headers: {
 			authorization: authToken ? `Bearer ${authToken}` : '',
-			'client-name': 'factorio-manager-amdin',
+			'client-name': 'factorio-manager-admin',
 			'client-version': pkg.version,
 		},
 	});

@@ -58,7 +58,9 @@ function RegisterUser() {
 			<Formik
 				initialValues={{ username: '', password: '', confirmPassword: '' }}
 				validate={validate}
-				onSubmit={values => register({ variables: values })}
+				onSubmit={({ confirmPassword, ...user }) => register({
+					variables: { user },
+				})}
 			>
 				{({
 					touched,

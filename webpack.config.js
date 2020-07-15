@@ -74,6 +74,9 @@ const environments = {
 		devServer: {
 			open: true,
 			historyApiFallback: true,
+			proxy: {
+				'/api': 'http://localhost:4000',
+			},
 		},
 	},
 
