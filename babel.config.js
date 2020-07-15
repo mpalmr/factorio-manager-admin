@@ -5,7 +5,9 @@ module.exports = function babelConfig(api) {
 
 	return {
 		presets: [
-			'@babel/preset-env',
+			['@babel/preset-env', process.env.NODE_ENV !== 'test' ? undefined : {
+				targets: { node: 'current' },
+			}],
 			'@babel/preset-react',
 		],
 	};

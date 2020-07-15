@@ -1,43 +1,34 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import gql from 'graphql-tag';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import pkg from '../package.json';
 
+const typeDefs = gql`
+	extend type Query {
+		isLoggedIn: Boolean!
+	}
+`;
+
 export default function createClient() {
-	// Setup local cache
+	const authToken = localStorage.getItem('authToken');
+
+	// Get initial local state
 	const cache = new InMemoryCache();
-	cache.writeData({
-		data: {
-			isLoggedIn: !!localStorage.getItem('authToken'),
-		},
-	});
-
-	// HTTP middleware
-	const httpLink = createHttpLink({
-		uri: 'http://localhost:4000/',
-		headers: {
-			'client-name': 'factorio-manager-amdin',
-			'client-version': pkg.version,
-		},
-	});
-
-	const authLink = setContext((_, { headers }) => {
-		const sessionToken = localStorage.getItem('authToken');
-		return {
-			headers: !sessionToken ? headers : {
-				...headers,
-				authorization: `Bearer ${sessionToken}`,
-			},
-		};
+	cache.writeQuery({
+		query: gql`
+			query IsLoggedIn {
+				isloggedIn @client
+			}
+		`,
+		data: {	isLoggedIn: !!authToken },
 	});
 
 	return new ApolloClient({
+		typeDefs,
 		cache,
-		link: authLink.concat(httpLink),
-		typeDefs: gql`
-			extend type Query {
-				isLoggedIn: Boolean!
-			}
-		`,
+		uri: 'http://localhost:4000/',
+		headers: {
+			authorization: authToken ? `Bearer ${authToken}` : '',
+			'client-name': 'factorio-manager-amdin',
+			'client-version': pkg.version,
+		},
 	});
 }

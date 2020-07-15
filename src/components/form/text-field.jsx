@@ -5,25 +5,17 @@ import { Form } from 'react-bootstrap';
 
 function TextField({
 	id,
-	name,
 	label,
-	type,
-	disabled,
 	touched,
 	error,
+	...props
 }) {
 	return (
 		<Form.Group controlId={id}>
 			{label && (
 				<Form.Label>{label}</Form.Label>
 			)}
-			<Field
-				as={Form.Control}
-				name={name}
-				type={type}
-				disabled={disabled}
-				aria-describedby={`${id}-help`}
-			/>
+			<Field as={Form.Control} aria-describedby={`${id}-help`} {...props}	/>
 			{touched && error && (
 				<Form.Text className="text-danger" muted>{error}</Form.Text>
 			)}
@@ -35,15 +27,11 @@ TextField.propTypes = {
 	id: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string,
-	type: PropTypes.oneOf(['text', 'password', 'email']),
-	disabled: PropTypes.bool,
 	touched: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 };
 TextField.defaultProps = {
 	label: null,
-	type: 'text',
-	disabled: false,
 	error: null,
 };
 

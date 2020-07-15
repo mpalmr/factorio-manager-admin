@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 import './styles.scss';
-import createClient from './apollo';
+import createClient from './client';
 import Routes from './routes';
 
 document.addEventListener('DOMContentLoaded', () => {
