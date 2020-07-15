@@ -12,13 +12,12 @@ import {
 import TextField from './form/text-field';
 
 const LOGIN_QUERY = gql`
-	mutation Login($username: String!, $password: String!) {
+	query Login($username: String!, $password: String!) {
 		authToken(username: $username, password: $password)
 	}
 `;
 
 function Login() {
-	console.log('ay');
 	const [login, query] = useLazyQuery(LOGIN_QUERY, {
 		onCompleted({ authToken }) {
 			localStorage.setItem('authToken', authToken);
