@@ -14,8 +14,24 @@ module.exports = {
 		'func-names': 0,
 		'consistent-return': 0,
 		'react/jsx-indent-props': 0,
+		'react/jsx-props-no-spreading': 0,
 	},
 	overrides: [
+		{
+			files: [
+				'**/__tests__/*.js',
+				'**/__tests__/*.jsx',
+				'**/__mocks__/*.js',
+				'**/__mocks__/*.jsx',
+			],
+			plugins: ['jest'],
+			env: { jest: true },
+			rules: {
+				'import/no-extraneous-dependencies': [2, {
+					devDependencies: true,
+				}],
+			},
+		},
 		{
 			files: [
 				'.eslintrc.js',
@@ -28,22 +44,6 @@ module.exports = {
 			parserOptions: { sourceType: 'script' },
 			rules: {
 				strict: [2, 'global'],
-			},
-		},
-		{
-			files: [
-				'**/__tests__/*.js',
-				'**/__mocks__/*.js',
-				'tests/**/*.spec.js',
-				'jest.setup.js',
-			],
-			env: { jest: true },
-			plugins: ['jest'],
-			rules: {
-				camelcase: 0,
-				'import/no-extraneous-dependencies': [2, {
-					devDependencies: true,
-				}],
 			},
 		},
 	],

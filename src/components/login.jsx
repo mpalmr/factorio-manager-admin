@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import TextField from './form/text-field';
 
-const LOGIN_QUERY = gql`
+export const LOGIN_QUERY = gql`
 	query Login($username: String!, $password: String!) {
 		authToken(username: $username, password: $password)
 	}
