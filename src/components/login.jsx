@@ -17,7 +17,8 @@ export const LOGIN_QUERY = gql`
 `;
 
 function Login() {
-	const [login, query] = useLazyQuery(LOGIN_QUERY, {
+	const [login] = useLazyQuery(LOGIN_QUERY, {
+		fetchPolicy: 'network-only',
 		onCompleted({ authToken }) {
 			localStorage.setItem('authToken', authToken);
 		},
@@ -44,7 +45,6 @@ function Login() {
 					handleSubmit,
 				}) => (
 					<Form noValidate onSubmit={handleSubmit}>
-						{console.log(touched)}
 						<Row>
 							<Col sm={6}>
 								<TextField

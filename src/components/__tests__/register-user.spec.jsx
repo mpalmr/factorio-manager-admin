@@ -14,13 +14,7 @@ const mocks = [{
 	result: {
 		data: { createUser: 'mockAuthToken' },
 	},
-}]
-
-afterEach(() => {
-	localStorage.clear();
-	// localStorage.__STORE__ = {}; // eslint-disable-line no-underscore-dangle
-	localStorage.setItem.mockClear();
-});
+}];
 
 describe('Validation', () => {
 	describe('Username', () => {
