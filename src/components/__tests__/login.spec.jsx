@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import Login, { LOGIN_QUERY } from '../login';
+import Login from '../login';
 
 test('Username and password is required', async () => {
 	const { container, getByText } = render((
