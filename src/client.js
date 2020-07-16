@@ -7,50 +7,37 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import pkg from '../package.json';
 
-export default function createClient() {
-	// Set initial local state
-	const cache = new InMemoryCache({
-		typePolicies: {
-			fields: {
-				Query: {
-					isLoggedIn: {
-						read() {
-							return !!localStorage.getItem('authToken');
-						},
-					},
-				},
-			},
+// Set initial local state
+const cache = new InMemoryCache();
+cache.writeQuery({
+	query: gql`
+		query IsLoggedIn {
+			isLoggedIn @client
+		}
+	`,
+	data: {	isLoggedIn: !!localStorage.getItem('authToken') },
+});
+
+// Setup HTTP link
+const httpLink = createHttpLink({ uri: 'http://localhost:4000/api' });
+const authLink = setContext((_, { headers }) => {
+	const authToken = localStorage.getItem('authToken');
+	return {
+		headers: {
+			...headers,
+			'client-name': 'factorio-manager-admin',
+			'client-version': pkg.version,
+			authorization: authToken ? `Bearer ${authToken}` : '',
 		},
-	});
+	};
+});
 
-	cache.writeQuery({
-		query: gql`
-			query IsLoggedIn {
-				isLoggedIn @client
-			}
-		`,
-		data: {	isLoggedIn: !!authToken },
-	});
-
-	// Setup HTTP link
-	const httpLink = createHttpLink({ uri: 'http://localhost:4000/api' });
-	const authLink = setContext((_, { headers }) => {
-		const authToken = localStorage.getItem('authToken');
-		return {
-			headers: {
-				...headers,
-				authorization: authToken ? `Bearer ${authToken}` : '',
-			},
-		};
-	});
-
-	return new ApolloClient({
-		cache,
-		link: authLink.concat(httpLink),
-		typeDefs: gql`
-			extend type Query {
-				isLoggedIn: Boolean!
-			}
-		`,
-	});
-}
+export default new ApolloClient({
+	cache,
+	link: authLink.concat(httpLink),
+	typeDefs: gql`
+		extend type Query {
+			isLoggedIn: Boolean!
+		}
+	`,
+});
