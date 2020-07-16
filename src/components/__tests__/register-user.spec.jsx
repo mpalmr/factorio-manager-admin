@@ -25,7 +25,7 @@ describe('Validation', () => {
 				</MockedProvider>
 			));
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelector('.text-danger')).toHaveTextContent('Required');
 		});
 
@@ -39,7 +39,7 @@ describe('Validation', () => {
 				target: { value: 'a' },
 			});
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelector('.text-danger'))
 				.toHaveTextContent('Username must be at least three characters');
 		});
@@ -53,7 +53,7 @@ describe('Validation', () => {
 				</MockedProvider>
 			));
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelectorAll('.text-danger')[1]).toHaveTextContent('Required');
 		});
 
@@ -67,7 +67,7 @@ describe('Validation', () => {
 				target: { value: 'fivve' },
 			});
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelectorAll('.text-danger')[1])
 				.toHaveTextContent('Must be at least 6 characters');
 		});
@@ -82,7 +82,7 @@ describe('Validation', () => {
 				target: { value: 'P@ssw0rd' },
 			});
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelector('.row:nth-child(2) .col-sm-6:last-child .text-danger'))
 				.toHaveTextContent('Required');
 		});
@@ -100,7 +100,7 @@ describe('Validation', () => {
 				target: { value: 'Passw0rd' },
 			});
 			fireEvent.click(getByText('Register'));
-			await waitFor(() => !!document.querySelector('.text-danger'));
+			await waitFor(() => !!container.querySelector('.text-danger'));
 			expect(container.querySelector('.row:nth-child(2) .col-sm-6:last-child .text-danger'))
 				.toHaveTextContent('Passwords do not match');
 		});

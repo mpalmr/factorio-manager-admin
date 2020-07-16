@@ -108,7 +108,7 @@ function RegisterUser() {
 						</Row>
 						<Row>
 							<Col>
-								<Button type="submit" variat="primary" size="lg" disabled={isSubmitting} block>
+								<Button type="submit" variant="primary" size="lg" disabled={isSubmitting} block>
 									Register
 								</Button>
 							</Col>
