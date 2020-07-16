@@ -71,7 +71,13 @@ const base = {
 const environments = {
 	development: {
 		mode: 'development',
-		devServer: { open: true },
+		devServer: {
+			open: true,
+			historyApiFallback: true,
+			proxy: {
+				'/api': 'http://localhost:4000',
+			},
+		},
 	},
 
 	production: {
