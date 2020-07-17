@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLazyQuery, gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import {
 	Container,
@@ -11,16 +12,18 @@ import {
 import TextField from './form/text-field';
 
 export const LOGIN_QUERY = gql`
-	query Login($username: String!, $password: String!) {
-		authToken(username: $username, password: $password)
+	mutation Login($credentials: CredentialsInput!) {
+		createAuthToken(credentials: $credentials)
 	}
 `;
 
 function Login() {
-	const [login] = useLazyQuery(LOGIN_QUERY, {
-		fetchPolicy: 'network-only',
-		onCompleted({ authToken }) {
-			localStorage.setItem('authToken', authToken);
+	const history = useHistory();
+
+	const [login] = useMutation(LOGIN_QUERY, {
+		onCompleted({ createAuthToken }) {
+			localStorage.setItem('authToken', createAuthToken);
+			history.push('/');
 		},
 	});
 
@@ -36,7 +39,9 @@ function Login() {
 			<Formik
 				initialValues={{ username: '', password: '' }}
 				validate={validate}
-				onSubmit={values => login({ variables: values })}
+				onSubmit={values => login({
+					variables: { credentials: values },
+				})}
 			>
 				{({
 					touched,

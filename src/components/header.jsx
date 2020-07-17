@@ -3,7 +3,7 @@ import { useApolloClient, gql } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
-const IS_LOGGED_IN = gql`
+export const IS_LOGGED_IN = gql`
 	query IsLoggedIn {
 		isLoggedIn @client
 	}
