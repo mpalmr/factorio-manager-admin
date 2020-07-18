@@ -1,0 +1,9 @@
+.status {
+	&.online {
+		background-color: #0f0;
+	}
+
+	&:not(.online) {
+		background-color: #f00;
+	}
+}

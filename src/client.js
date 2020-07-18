@@ -7,8 +7,6 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import pkg from '../package.json';
 
-console.log(!!localStorage.getItem('authToken'));
-
 // Set initial local state
 const cache = new InMemoryCache();
 cache.writeQuery({
