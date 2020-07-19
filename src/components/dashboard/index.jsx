@@ -5,7 +5,7 @@ import GameTable from './game-table';
 import CreateGame from './create-game';
 import LoadingIndicator from '../loading-indicator';
 
-const DASHBOARD_QUERY = gql`
+export const DASHBOARD_QUERY = gql`
 	query Dashboard {
 		games {
 			...TableGame
