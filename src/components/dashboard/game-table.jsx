@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { gql } from '@apollo/client';
 import { Table } from 'react-bootstrap';
 import styles from './game-table.scss';
+import DeactivateGameButton from './deactivate-game-button';
 import { gamePropType } from '../../prop-types';
 
 function GameTable({ games }) {
@@ -16,6 +17,7 @@ function GameTable({ games }) {
 					<th>Status</th>
 					<th>Creator</th>
 					<th>Created At</th>
+					<th aria-label="controls" />
 				</tr>
 			</thead>
 			<tbody>
@@ -26,6 +28,9 @@ function GameTable({ games }) {
 						<td className={cn('status', game.isOnline ? styles.online : '')} />
 						<td>{game.creator.username}</td>
 						<td>{game.createdAt.toLocaleString()}</td>
+						<td className={styles.controlCell}>
+							<DeactivateGameButton gameId={game.id} />
+						</td>
 					</tr>
 				))}
 			</tbody>

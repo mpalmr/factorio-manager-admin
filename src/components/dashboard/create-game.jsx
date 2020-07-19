@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import TextField from '../form/text-field';
@@ -21,7 +21,29 @@ export const CREATE_GAME = gql`
 `;
 
 function CreateGame() {
-	const [create] = useMutation(CREATE_GAME);
+	const [create] = useMutation(CREATE_GAME, {
+		update(cache, { data }) {
+			cache.modify({
+				fields: {
+					games(existingGames = []) {
+						const newGameRef = cache.writeFragment({
+							data: data.createGame,
+							fragment: gql`
+								fragment NewGame on Game {
+									id
+									name
+									version
+									isOnline
+									createdAt
+								}
+							`,
+						});
+						return existingGames.concat(newGameRef);
+					},
+				},
+			});
+		},
+	});
 
 	function validate(values) {
 		const errors = {};
