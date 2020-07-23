@@ -1,13 +1,7 @@
-import { ApolloClient, gql } from '@apollo/client';
-import cache from './cache';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import link from './link';
 
 export default new ApolloClient({
-	cache,
 	link,
-	typeDefs: gql`
-		extend type Query {
-			isLoggedIn: Boolean!
-		}
-	`,
+	cache: new InMemoryCache(),
 });

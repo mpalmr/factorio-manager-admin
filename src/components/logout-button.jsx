@@ -1,8 +1,8 @@
 import React from 'react';
-import { gql, useApolloClient, useMutation } from '@apollo/client';
+import PropTypes from 'prop-types';
+import { gql, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { isLoggedIn } from '../cache';
 
 const LOGOUT_MUTATION = gql`
 	mutation Logout($token: String!) {
@@ -10,23 +10,22 @@ const LOGOUT_MUTATION = gql`
 	}
 `;
 
-function LogoutButton() {
+function LogoutButton({ logout }) {
 	const history = useHistory();
-	const client = useApolloClient();
 
-	const [logout, { loading }] = useMutation(LOGOUT_MUTATION, {
+	const [reqLogout, { loading }] = useMutation(LOGOUT_MUTATION, {
 		variables: { token: localStorage.getItem('authToken') },
-		update() {
-			localStorage.clear();
-			client.clearStore();
-			isLoggedIn(false);
+		onCompleted() {
+			logout();
 			history.push('/login');
 		},
 	});
 
 	return (
-		<Button disabled={loading} onClick={logout}>Logout</Button>
+		<Button disabled={loading} onClick={reqLogout}>Logout</Button>
 	);
 }
+
+LogoutButton.propTypes = { logout: PropTypes.func.isRequired };
 
 export default LogoutButton;

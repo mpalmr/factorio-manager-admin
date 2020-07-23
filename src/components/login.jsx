@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { useHistory, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
 import {
 	Container,
@@ -9,7 +9,7 @@ import {
 	Button,
 	Form,
 } from 'react-bootstrap';
-import { isLoggedIn } from '../cache';
+import { AuthContext } from '../providers/authentication';
 import TextField from './form/text-field';
 
 export const LOGIN_MUTATION = gql`
@@ -19,13 +19,11 @@ export const LOGIN_MUTATION = gql`
 `;
 
 function Login() {
-	const history = useHistory();
+	const { isLoggedIn, login } = useContext(AuthContext);
 
-	const [login] = useMutation(LOGIN_MUTATION, {
-		onCompleted({ authToken }) {
-			localStorage.setItem('authToken', authToken);
-			isLoggedIn(true);
-			history.push('/');
+	const [loginReq] = useMutation(LOGIN_MUTATION, {
+		onCompleted({ createAuthToken }) {
+			login(createAuthToken);
 		},
 	});
 
@@ -36,14 +34,14 @@ function Login() {
 		return errors;
 	}
 
-	return isLoggedIn() ? (
+	return isLoggedIn ? (
 		<Redirect to="/" />
 	) : (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '' }}
 				validate={validate}
-				onSubmit={values => login({
+				onSubmit={values => loginReq({
 					variables: { credentials: values },
 				})}
 			>

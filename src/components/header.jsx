@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
+import { AuthContext } from '../providers/authentication';
 import LogoutButton from './logout-button';
-import { isLoggedIn } from '../cache';
 
 function Header() {
+	const { isLoggedIn, logout } = useContext(AuthContext);
+
 	return (
 		<Navbar as="header" bg="light" expand="lg">
 			<Navbar.Brand href="/">Factorio Admin</Navbar.Brand>
@@ -16,9 +18,9 @@ function Header() {
 					</Nav.Item>
 				</Nav>
 				<Nav>
-					{isLoggedIn() ? (
+					{isLoggedIn ? (
 						<Nav.Item>
-							<LogoutButton />
+							<LogoutButton logout={logout} />
 						</Nav.Item>
 					) : (
 						<>

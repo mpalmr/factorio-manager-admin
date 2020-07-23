@@ -2,7 +2,6 @@ import { createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import pkg from '../package.json';
-import cache, { isLoggedIn } from './cache';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/api' });
 
@@ -21,8 +20,6 @@ const authLink = setContext((_, { headers }) => {
 const logoutLink = onError(({ networkError }) => {
 	if (networkError.statusCode === 401) {
 		localStorage.clear();
-		isLoggedIn(false);
-		cache.reset();
 	}
 });
 
