@@ -1,17 +1,11 @@
-import React from 'react';
-import { useApolloClient, gql } from '@apollo/client';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
-
-const IS_LOGGED_IN = gql`
-	query IsLoggedIn {
-		isLoggedIn @client
-	}
-`;
+import { AuthContext } from '../providers/authentication';
+import LogoutButton from './logout-button';
 
 function Header() {
-	const client = useApolloClient();
-	const { isLoggedIn } = client.cache.readQuery({ query: IS_LOGGED_IN });
+	const { isLoggedIn, logout } = useContext(AuthContext);
 
 	return (
 		<Navbar as="header" bg="light" expand="lg">
@@ -26,7 +20,7 @@ function Header() {
 				<Nav>
 					{isLoggedIn ? (
 						<Nav.Item>
-							<Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+							<LogoutButton logout={logout} />
 						</Nav.Item>
 					) : (
 						<>

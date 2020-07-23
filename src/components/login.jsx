@@ -1,5 +1,6 @@
-import React from 'react';
-import { useLazyQuery, gql } from '@apollo/client';
+import React, { useContext } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
 import {
 	Container,
@@ -8,19 +9,21 @@ import {
 	Button,
 	Form,
 } from 'react-bootstrap';
+import { AuthContext } from '../providers/authentication';
 import TextField from './form/text-field';
 
-export const LOGIN_QUERY = gql`
-	query Login($username: String!, $password: String!) {
-		authToken(username: $username, password: $password)
+export const LOGIN_MUTATION = gql`
+	mutation Login($credentials: CredentialsInput!) {
+		createAuthToken(credentials: $credentials)
 	}
 `;
 
 function Login() {
-	const [login] = useLazyQuery(LOGIN_QUERY, {
-		fetchPolicy: 'network-only',
-		onCompleted({ authToken }) {
-			localStorage.setItem('authToken', authToken);
+	const { isLoggedIn, login } = useContext(AuthContext);
+
+	const [loginReq] = useMutation(LOGIN_MUTATION, {
+		onCompleted({ createAuthToken }) {
+			login(createAuthToken);
 		},
 	});
 
@@ -31,12 +34,16 @@ function Login() {
 		return errors;
 	}
 
-	return (
+	return isLoggedIn ? (
+		<Redirect to="/" />
+	) : (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '' }}
 				validate={validate}
-				onSubmit={values => login({ variables: values })}
+				onSubmit={values => loginReq({
+					variables: { credentials: values },
+				})}
 			>
 				{({
 					touched,
