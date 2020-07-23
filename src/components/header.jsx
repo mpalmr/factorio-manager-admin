@@ -1,18 +1,10 @@
 import React from 'react';
-import { useApolloClient, gql } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
-
-const IS_LOGGED_IN = gql`
-	query IsLoggedIn {
-		isLoggedIn @client
-	}
-`;
+import LogoutButton from './logout-button';
+import { isLoggedIn } from '../cache';
 
 function Header() {
-	const client = useApolloClient();
-	const { isLoggedIn } = client.cache.readQuery({ query: IS_LOGGED_IN });
-
 	return (
 		<Navbar as="header" bg="light" expand="lg">
 			<Navbar.Brand href="/">Factorio Admin</Navbar.Brand>
@@ -24,9 +16,9 @@ function Header() {
 					</Nav.Item>
 				</Nav>
 				<Nav>
-					{isLoggedIn ? (
+					{isLoggedIn() ? (
 						<Nav.Item>
-							<Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+							<LogoutButton />
 						</Nav.Item>
 					) : (
 						<>
