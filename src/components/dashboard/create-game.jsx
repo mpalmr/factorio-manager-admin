@@ -4,20 +4,27 @@ import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import TextField from '../form/text-field';
 
+const CREATE_GAME_FRAGMENT = gql`
+	fragment NewGame on Game {
+		id
+		name
+		version
+		isOnline
+		createdAt
+	}
+`;
+
 export const CREATE_GAME = gql`
 	mutation CreateGame($game: CreateGameInput!) {
 		createGame(game: $game) {
-			id
-			name
-			version
-			isOnline
+			...NewGame
 			creator {
 				id
 				username
 			}
-			createdAt
 		}
 	}
+	${CREATE_GAME_FRAGMENT}
 `;
 
 function CreateGame() {
@@ -26,7 +33,7 @@ function CreateGame() {
 			cache.modify({
 				fields: {
 					games(existingGames = []) {
-						const newGameRef = cache.writeFragment({
+						return existingGames.concat(cache.writeFragment({
 							data: data.createGame,
 							fragment: gql`
 								fragment NewGame on Game {
@@ -37,8 +44,7 @@ function CreateGame() {
 									createdAt
 								}
 							`,
-						});
-						return existingGames.concat(newGameRef);
+						}));
 					},
 				},
 			});
@@ -54,13 +60,21 @@ function CreateGame() {
 		return errors;
 	}
 
+	function onSubmit(values, { resetForm }) {
+		return create({
+			variables: { game: values },
+		})
+			.then(result => {
+				resetForm();
+				return result;
+			});
+	}
+
 	return (
 		<Formik
 			initialValues={{ name: '' }}
 			validate={validate}
-			onSubmit={values => create({
-				variables: { game: values },
-			})}
+			onSubmit={onSubmit}
 		>
 			{({
 				isSubmitting,

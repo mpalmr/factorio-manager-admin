@@ -22,7 +22,7 @@ function GameTable({ games }) {
 			</thead>
 			<tbody>
 				{games.map(game => (
-					<tr>
+					<tr key={game.id}>
 						<th>{game.name}</th>
 						<td>{game.version}</td>
 						<td className={cn('status', game.isOnline ? styles.online : '')} />
@@ -38,7 +38,7 @@ function GameTable({ games }) {
 	);
 }
 
-GameTable.propTypes = { games: PropTypes.arrayOf(gamePropType.isRequired).isRequired };
+GameTable.propTypes = { games: PropTypes.arrayOf(gamePropType).isRequired };
 
 GameTable.fragments = {
 	game: gql`

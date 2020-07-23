@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 
-export const userPropType = {};
+export const userPropType = {
+	id: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
+};
 
-export const gamePropType = {
+export const gamePropType = PropTypes.shape({
 	name: PropTypes.string.isRequired,
 	version: PropTypes.string.isRequired,
 	isOnline: PropTypes.bool.isRequired,
@@ -11,4 +14,4 @@ export const gamePropType = {
 		username: PropTypes.string.isRequired,
 	}).isRequired,
 	createdAt: PropTypes.instanceOf(Date).isRequired,
-};
+});
