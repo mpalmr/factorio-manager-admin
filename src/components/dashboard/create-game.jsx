@@ -4,19 +4,39 @@ import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import TextField from '../form/text-field';
 
-export const CREATE_GAME_MUTATION = gql`
-	mutation CreateGame($game: CreateGameInput!) {
-		createGame(game: $game) {
-			id
-			name
-			version
-			createdAt
-		}
+const NEW_GAME_FRAGMENT = gql`
+	fragment NewGame on Game {
+		id
+		name
+		version
+		createdAt
 	}
 `;
 
+export const CREATE_GAME_MUTATION = gql`
+	mutation CreateGame($game: CreateGameInput!) {
+		createGame(game: $game) {
+			...NewGame
+		}
+	}
+	${NEW_GAME_FRAGMENT}
+`;
+
 function CreateGame() {
-	const [create] = useMutation(CREATE_GAME_MUTATION, {});
+	const [create] = useMutation(CREATE_GAME_MUTATION, {
+		update(cache, { data }) {
+			cache.modify({
+				fields: {
+					games(existingGames = []) {
+						return existingGames.concat(cache.writeFragment({
+							fragment: NEW_GAME_FRAGMENT,
+							data: data.createGame,
+						}));
+					},
+				},
+			});
+		},
+	});
 
 	function validate(values) {
 		const errors = {};
@@ -69,5 +89,7 @@ function CreateGame() {
 		</Formik>
 	);
 }
+
+CreateGame.fragments = { newGame: NEW_GAME_FRAGMENT };
 
 export default CreateGame;
