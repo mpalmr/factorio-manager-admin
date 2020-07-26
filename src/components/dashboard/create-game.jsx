@@ -45,7 +45,7 @@ function CreateGame() {
 				errors,
 				handleSubmit,
 			}) => (
-				<Form onSubmit={handleSubmit}>
+				<Form noValidate onSubmit={handleSubmit}>
 					<TextField
 						id="create-game-name"
 						name="name"
