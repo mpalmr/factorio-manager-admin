@@ -8,6 +8,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const base = {
 	context: path.resolve('src'),
 	entry: [
+		'core-js/stable',
+		'regenerator-runtime/runtime',
 		'bootstrap/dist/css/bootstrap.min.css',
 		'./index.jsx',
 	],
@@ -37,7 +39,6 @@ const base = {
 						options: {
 							sourceMap: true,
 							importLoaders: 1,
-							localsConvention: 'camelCase',
 							modules: { localIdentName: '[path][name]_[local]--[hash:base64:5]' },
 						},
 					},

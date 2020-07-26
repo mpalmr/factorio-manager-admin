@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import PrivateRoute from './components/private-route';
 import App from './components/app';
 import Dashboard from './components/dashboard';
 import Login from './components/login';
@@ -14,10 +15,18 @@ function Routes() {
 		<Router history={history}>
 			<App>
 				<Switch>
-					<Route exact path="/" component={Dashboard} />
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/register" component={RegisterUser} />
-					<Route component={NotFound} />
+					<PrivateRoute exact path="/">
+						<Dashboard />
+					</PrivateRoute>
+					<Route exact path="/login">
+						<Login />
+					</Route>
+					<Route exact path="/register">
+						<RegisterUser />
+					</Route>
+					<Route>
+						<NotFound />
+					</Route>
 				</Switch>
 			</App>
 		</Router>
