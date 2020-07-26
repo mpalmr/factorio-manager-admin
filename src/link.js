@@ -18,9 +18,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const logoutLink = onError(({ networkError }) => {
-	if (networkError.statusCode === 401) {
-		localStorage.clear();
-	}
+	if (networkError?.statusCode === 401) localStorage.clear();
 });
 
 export default logoutLink.concat(authLink.concat(httpLink));
