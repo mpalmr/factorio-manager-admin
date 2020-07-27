@@ -44,7 +44,7 @@ GameTable.propTypes = {
 		createdAt: PropTypes.instanceOf(Date).isRequired,
 		creator: PropTypes.shape({
 			id: PropTypes.string.isRequired,
-			name: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
 		}).isRequired,
 	})),
 };

@@ -9,16 +9,22 @@ export const DELETE_GAME_MUTATION = gql`
 	}
 `;
 
+const GAMES_QUERY = gql`
+	query Games {
+		games {
+			id
+		}
+	}
+`;
+
 function DeleteGameButton({ gameId }) {
 	const [deleteGame, { loading }] = useMutation(DELETE_GAME_MUTATION, {
 		variables: { gameId },
 		update(cache) {
-			cache.modify({
-				fields: {
-					games(existingGames = []) {
-						return existingGames.filter(game => game.id !== gameId);
-					},
-				},
+			const { games } = cache.readQuery({ query: GAMES_QUERY });
+			return cache.writeQuery({
+				query: GAMES_QUERY,
+				data: { games: games.filter(game => game.id !== gameId) },
 			});
 		},
 	});
