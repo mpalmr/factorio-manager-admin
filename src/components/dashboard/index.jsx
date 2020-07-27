@@ -20,6 +20,10 @@ export const DASHBOARD_QUERY = gql`
 
 function Dashboard() {
 	const { data, loading } = useQuery(DASHBOARD_QUERY);
+	const games = (data?.games || []).map(game => ({
+		...game,
+		createdAt: new Date(game.createdAt),
+	}));
 
 	return (
 		<Container>
@@ -28,7 +32,7 @@ function Dashboard() {
 				<LoadingIndicator />
 			) : (
 				<>
-					<GameTable games={data.games} />
+					<GameTable games={games} />
 					<CreateGame />
 				</>
 			)}

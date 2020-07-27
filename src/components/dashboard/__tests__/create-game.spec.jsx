@@ -6,7 +6,24 @@ import CreateGame, { CREATE_GAME_MUTATION } from '../create-game';
 describe('Validation', () => {
 	test('name', async () => {
 		const { getByLabelText, getByText } = render((
-			<MockedProvider>
+			<MockedProvider
+				mocks={[{
+					request: {
+						query: CREATE_GAME_MUTATION,
+						variables: {
+							game: { name: 'Sup' },
+						},
+					},
+					result: {
+						createGame: {
+							id: 'supId',
+							name: 'Sup',
+							version: 'latest',
+							createdAt: new Date('2020-01-01'),
+						},
+					},
+				}]}
+			>
 				<CreateGame />
 			</MockedProvider>
 		));
@@ -30,7 +47,9 @@ test('Successful submission', async () => {
 			mocks={[{
 				request: {
 					query: CREATE_GAME_MUTATION,
-					variables: { name: 'Sup' },
+					variables: {
+						game: { name: 'Sup' },
+					},
 				},
 				result: {
 					createGame: {

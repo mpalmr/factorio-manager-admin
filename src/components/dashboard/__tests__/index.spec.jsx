@@ -49,6 +49,5 @@ test('Loading state', async () => {
 	));
 
 	expect(getByText('Loading...')).toBeInTheDocument();
-	await waitFor(() => expect(getByText('Loading...')).not.toBeInTheDocument());
-	expect(getByText('Create Game')).toBeInTheDocument();
+	await waitFor(() => expect(getByText('Create Game')).toBeInTheDocument());
 });

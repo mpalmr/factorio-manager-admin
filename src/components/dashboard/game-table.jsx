@@ -9,7 +9,7 @@ function GameTable({ games }) {
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>version</th>
+					<th>Version</th>
 					<th>Created At</th>
 					<th>Creator</th>
 					<th aria-label="Controls" />
@@ -17,7 +17,9 @@ function GameTable({ games }) {
 			</thead>
 			<tbody>
 				{games.length === 0 ? (
-					<td colSpan={5}>There are no games currently active.</td>
+					<tr>
+						<td colSpan={5}>There are no games currently active.</td>
+					</tr>
 				) : games.map(game => (
 					<tr key={game.id}>
 						<th>{game.name}</th>
