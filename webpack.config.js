@@ -73,6 +73,7 @@ const environments = {
 	development: {
 		mode: 'development',
 		devServer: {
+			publicPath: '/',
 			open: true,
 			historyApiFallback: true,
 			proxy: {

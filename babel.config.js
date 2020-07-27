@@ -5,7 +5,10 @@ module.exports = function babelConfig(api) {
 
 	return {
 		presets: [
-			['@babel/preset-env', { useBuiltIns: 'entry' }],
+			['@babel/preset-env', {
+				corejs: '3.6.5',
+				useBuiltIns: 'usage',
+			}],
 			'@babel/preset-react',
 		],
 	};
