@@ -47,10 +47,12 @@ function CreateGame() {
 		return errors;
 	}
 
-	async function onSubmit(values) {
-		return create({
+	async function onSubmit(values, { resetForm }) {
+		const result = await create({
 			variables: { game: values },
 		});
+		resetForm();
+		return result;
 	}
 
 	return (
