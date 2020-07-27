@@ -27,7 +27,7 @@ function GameTable({ games }) {
 						<td>{game.createdAt.toLocaleString()}</td>
 						<td>{game.creator.username}</td>
 						<td>
-							<DeleteGameButton id={game.id} />
+							<DeleteGameButton gameId={game.id} />
 						</td>
 					</tr>
 				))}
