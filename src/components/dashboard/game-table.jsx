@@ -44,7 +44,8 @@ GameTable.propTypes = {
 			id: PropTypes.string.isRequired,
 			name: PropTypes.string.isRequired,
 		}).isRequired,
-	})).isRequired,
+	})),
 };
+GameTable.defaultProps = { games: [] };
 
 export default GameTable;

@@ -7,10 +7,12 @@ import LoadingIndicator from '../loading-indicator';
 
 export const DASHBOARD_QUERY = gql`
 	query DashboardQuery {
-		...NewGame
-		creator {
-			id
-			username
+		games {
+			...NewGame
+			creator {
+				id
+				username
+			}
 		}
 	}
 	${CreateGame.fragments.newGame}
