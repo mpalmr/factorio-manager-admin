@@ -18,16 +18,16 @@ const GAMES_QUERY = gql`
 	}
 `;
 
-function DeleteGameButton({ gameId, gameName }) {
+function DeleteGameButton({ id, name }) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const [deleteGame, { loading }] = useMutation(DELETE_GAME_MUTATION, {
-		variables: { gameId },
+		variables: { gameId: id },
 		update(cache) {
-			const { games } = cache.readQuery({ query: GAMES_QUERY });
+			const games = cache.readQuery({ query: GAMES_QUERY })?.games || [];
 			return cache.writeQuery({
 				query: GAMES_QUERY,
-				data: { games: games.filter(game => game.id !== gameId) },
+				data: { games: games.filter(game => game.id !== id) },
 			});
 		},
 	});
@@ -48,15 +48,15 @@ function DeleteGameButton({ gameId, gameName }) {
 				onClose={() => setIsModalOpen(false)}
 				onConfirm={onConfirm}
 			>
-				<p>Are you sure you want to delete {gameName}.</p>
+				<p>Are you sure you want to delete {name}.</p>
 			</ConfirmationModal>
 		</>
 	);
 }
 
 DeleteGameButton.propTypes = {
-	gameId: PropTypes.string.isRequired,
-	gameName: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
 };
 
 export default DeleteGameButton;

@@ -11,8 +11,9 @@ function AuthProvider({ children }) {
 			value={{
 				isLoggedIn,
 
-				login(authToken) {
+				login(authToken, username) {
 					localStorage.setItem('authToken', authToken);
+					localStorage.setItem('username', username);
 					setIsLoggedIn(true);
 				},
 
