@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import DeleteGameButton from './delete-game-button';
+import { AuthContext } from '../../providers/authentication';
 
 function GameTable({ games }) {
+	const { username } = useContext(AuthContext);
+
 	return (
 		<Table>
 			<thead>
@@ -27,7 +30,9 @@ function GameTable({ games }) {
 						<td>{game.createdAt.toLocaleString()}</td>
 						<td>{game.creator.username}</td>
 						<td>
-							<DeleteGameButton id={game.id} name={game.name} />
+							{game.creator.username === username && (
+								<DeleteGameButton id={game.id} name={game.name} />
+							)}
 						</td>
 					</tr>
 				))}
