@@ -18,6 +18,10 @@ const NEW_GAME_FRAGMENT = gql`
 		name
 		version
 		createdAt
+		creator {
+			id
+			username
+		}
 	}
 `;
 
@@ -30,13 +34,10 @@ export const AVAILABLE_VERSIONS_QUERY = gql`
 export const CREATE_GAME_MUTATION = gql`
 	mutation CreateGame($game: CreateGameInput!) {
 		createGame(game: $game) {
-			id
-			name
-			version
-			createdAt
+			...NewGame
 		}
+		${NEW_GAME_FRAGMENT}
 	}
-	${NEW_GAME_FRAGMENT}
 `;
 
 function CreateGame() {

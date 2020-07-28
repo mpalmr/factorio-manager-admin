@@ -9,7 +9,10 @@ import LoadingIndicator from '../loading-indicator';
 export const DASHBOARD_QUERY = gql`
 	query DashboardQuery {
 		games {
-			...NewGame
+			id
+			name
+			version
+			createdAt
 			creator {
 				id
 				username
