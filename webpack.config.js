@@ -16,6 +16,7 @@ const base = {
 	output: {
 		path: path.resolve('dist'),
 		filename: 'main.js',
+		publicPath: '/',
 	},
 	resolve: { extensions: ['.js', '.jsx', '.json'] },
 	module: {
@@ -30,7 +31,7 @@ const base = {
 				}],
 			},
 			{
-				test: /\.s(c|a)ss$/,
+				test: /\.s?css$/,
 				exclude: /node_modules/,
 				use: [
 					MiniCssExtractPlugin.loader,
@@ -39,7 +40,10 @@ const base = {
 						options: {
 							sourceMap: true,
 							importLoaders: 1,
-							modules: { localIdentName: '[path][name]_[local]--[hash:base64:5]' },
+							modules: {
+								exportLocalsConvention: 'camelCase',
+								localIdentName: '[path][name]_[local]--[hash:base64:5]',
+							},
 						},
 					},
 					{
@@ -73,11 +77,14 @@ const environments = {
 	development: {
 		mode: 'development',
 		devServer: {
-			publicPath: '/',
-			open: true,
+			contentBase: path.resolve('dist'),
 			historyApiFallback: true,
+			open: true,
 			proxy: {
-				'/api': 'http://localhost:4000',
+				'/api': {
+					target: 'http://localhost:4000',
+					secure: false,
+				},
 			},
 		},
 	},

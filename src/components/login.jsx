@@ -10,7 +10,7 @@ import {
 	Form,
 } from 'react-bootstrap';
 import { AuthContext } from '../providers/authentication';
-import TextField from './form/text-field';
+import FormControl from './form-control';
 
 export const LOGIN_MUTATION = gql`
 	mutation Login($credentials: CredentialsInput!) {
@@ -60,7 +60,7 @@ function Login() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Row>
 							<Col sm={6}>
-								<TextField
+								<FormControl
 									id="login-username"
 									name="username"
 									label="Username"
@@ -70,7 +70,7 @@ function Login() {
 								/>
 							</Col>
 							<Col sm={6}>
-								<TextField
+								<FormControl
 									id="login-password"
 									name="password"
 									label="Password"

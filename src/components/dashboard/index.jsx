@@ -1,21 +1,24 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Button, Container } from 'react-bootstrap';
+import styles from './index.scss';
 import GameTable from './game-table';
-import CreateGame from './create-game';
 import LoadingIndicator from '../loading-indicator';
 
 export const DASHBOARD_QUERY = gql`
 	query DashboardQuery {
 		games {
-			...NewGame
+			id
+			name
+			version
+			createdAt
 			creator {
 				id
 				username
 			}
 		}
 	}
-	${CreateGame.fragments.newGame}
 `;
 
 function Dashboard() {
@@ -33,7 +36,11 @@ function Dashboard() {
 			) : (
 				<>
 					<GameTable games={games} />
-					<CreateGame />
+					<div className={styles.lowerControls}>
+						<Button as={Link} to="/game/new" variant="success" size="lg">
+							Create
+						</Button>
+					</div>
 				</>
 			)}
 		</Container>

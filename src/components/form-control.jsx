@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import { Form } from 'react-bootstrap';
 
-function TextField({
+function FormControl({
 	id,
+	component,
 	label,
 	touched,
 	error,
@@ -15,7 +16,7 @@ function TextField({
 			{label && (
 				<Form.Label>{label}</Form.Label>
 			)}
-			<Field as={Form.Control} aria-describedby={`${id}-help`} {...props}	/>
+			<Field as={component} aria-describedby={`${id}-help`} {...props} />
 			{touched && error && (
 				<Form.Text className="text-danger" muted>{error}</Form.Text>
 			)}
@@ -23,16 +24,18 @@ function TextField({
 	);
 }
 
-TextField.propTypes = {
+FormControl.propTypes = {
 	id: PropTypes.string.isRequired,
+	component: PropTypes.elementType,
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string,
 	touched: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 };
-TextField.defaultProps = {
+FormControl.defaultProps = {
+	component: Form.Control,
 	label: null,
 	error: null,
 };
 
-export default TextField;
+export default FormControl;

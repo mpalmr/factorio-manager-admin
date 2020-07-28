@@ -1,29 +1,54 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import CreateGame, { CREATE_GAME_MUTATION } from '../create-game';
+import CreateGame, { AVAILABLE_VERSIONS_QUERY, CREATE_GAME_MUTATION } from '../create-game';
+
+const mocks = [
+	{
+		request: {
+			query: CREATE_GAME_MUTATION,
+			variables: {
+				game: {
+					name: 'Sup',
+					version: 'latest',
+				},
+			},
+		},
+		result: {
+			data: {
+				createGame: {
+					id: 'supId',
+					name: 'Sup',
+					version: 'latest',
+					createdAt: new Date('2020-01-01'),
+					creator: {
+						id: '1',
+						username: 'ayyo',
+					},
+				},
+			},
+		},
+	},
+	{
+		request: { query: AVAILABLE_VERSIONS_QUERY },
+		result: {
+			data: {
+				availableVersions: [
+					'latest',
+					'stable',
+					'0.17.0',
+					'0.16.5',
+					'0.16.4',
+				],
+			},
+		},
+	},
+];
 
 describe('Validation', () => {
 	test('name', async () => {
 		const { getByLabelText, getByText } = render((
-			<MockedProvider
-				mocks={[{
-					request: {
-						query: CREATE_GAME_MUTATION,
-						variables: {
-							game: { name: 'Sup' },
-						},
-					},
-					result: {
-						createGame: {
-							id: 'supId',
-							name: 'Sup',
-							version: 'latest',
-							createdAt: new Date('2020-01-01'),
-						},
-					},
-				}]}
-			>
+			<MockedProvider mocks={mocks}>
 				<CreateGame />
 			</MockedProvider>
 		));
@@ -43,24 +68,7 @@ describe('Validation', () => {
 
 test('Successful submission', async () => {
 	const { getByLabelText, getByText } = render((
-		<MockedProvider
-			mocks={[{
-				request: {
-					query: CREATE_GAME_MUTATION,
-					variables: {
-						game: { name: 'Sup' },
-					},
-				},
-				result: {
-					createGame: {
-						id: 'supId',
-						name: 'Sup',
-						version: 'latest',
-						createdAt: new Date('2020-01-01'),
-					},
-				},
-			}]}
-		>
+		<MockedProvider mocks={mocks}>
 			<CreateGame />
 		</MockedProvider>
 	));
