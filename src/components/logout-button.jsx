@@ -19,6 +19,9 @@ function LogoutButton({ logout }) {
 			logout();
 			history.push('/login');
 		},
+		onError() {
+			logout();
+		},
 	});
 
 	return (

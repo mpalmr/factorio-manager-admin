@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
 import {
 	Container,
@@ -10,6 +10,7 @@ import {
 	Form,
 } from 'react-bootstrap';
 import TextField from './form/text-field';
+import { AuthContext } from '../providers/authentication';
 
 export const REGISTRATION_MUTATION = gql`
 	mutation RegisterUser($user: CredentialsInput!) {
@@ -18,22 +19,15 @@ export const REGISTRATION_MUTATION = gql`
 `;
 
 function RegisterUser() {
-	const history = useHistory();
+	const { username, login } = useContext(AuthContext);
+	const [register] = useMutation(REGISTRATION_MUTATION);
 
-	const [register] = useMutation(REGISTRATION_MUTATION, {
-		update(cache, { data }) {
-			localStorage.setItem('authToken', data.createUser);
-			cache.writeQuery({
-				query: gql`
-					query LoginQuery {
-						isLoggedIn @client
-					}
-				`,
-				data: { isLoggedIn: true },
-			});
-			history.push('/');
-		},
-	});
+	async function onSubmit({ confirmPassword, ...user }) {
+		await register({
+			variables: { user },
+		});
+		login(user.username);
+	}
 
 	function validate(values) {
 		const errors = {};
@@ -53,14 +47,14 @@ function RegisterUser() {
 		return errors;
 	}
 
-	return (
+	return username ? (
+		<Redirect to="/" />
+	) : (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '', confirmPassword: '' }}
 				validate={validate}
-				onSubmit={({ confirmPassword, ...user }) => register({
-					variables: { user },
-				})}
+				onSubmit={onSubmit}
 			>
 				{({
 					touched,

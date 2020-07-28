@@ -19,13 +19,21 @@ export const LOGIN_MUTATION = gql`
 `;
 
 function Login() {
-	const { isLoggedIn, login } = useContext(AuthContext);
+	const { username, login } = useContext(AuthContext);
 
 	const [loginReq] = useMutation(LOGIN_MUTATION, {
 		onCompleted({ createAuthToken }) {
 			login(createAuthToken);
 		},
 	});
+
+	async function onSubmit(values) {
+		const authToken = await loginReq({
+			variables: { credentials: values },
+		})
+			.then(({ data }) => data.createAuthToken);
+		login(authToken, values.username);
+	}
 
 	function validate(values) {
 		const errors = {};
@@ -34,16 +42,14 @@ function Login() {
 		return errors;
 	}
 
-	return isLoggedIn ? (
+	return username ? (
 		<Redirect to="/" />
 	) : (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '' }}
 				validate={validate}
-				onSubmit={values => loginReq({
-					variables: { credentials: values },
-				})}
+				onSubmit={onSubmit}
 			>
 				{({
 					touched,

@@ -1,25 +1,25 @@
 import React, { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
-export const AuthContext = createContext({ isLoggedIn: false });
+export const AuthContext = createContext({ username: null });
 
 function AuthProvider({ children }) {
-	const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken'));
+	const [username, setUsername] = useState(localStorage.getItem('username'));
 
 	return (
 		<AuthContext.Provider
 			value={{
-				isLoggedIn,
+				username,
 
-				login(authToken, username) {
+				login(authToken, loginUsername) {
 					localStorage.setItem('authToken', authToken);
-					localStorage.setItem('username', username);
-					setIsLoggedIn(true);
+					localStorage.setItem('username', loginUsername);
+					setUsername(loginUsername);
 				},
 
 				logout() {
 					localStorage.clear();
-					setIsLoggedIn(false);
+					setUsername(null);
 				},
 			}}
 		>
