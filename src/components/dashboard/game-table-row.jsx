@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from './game-table-row.scss';
 import DeleteGameButton from './delete-game-button';
 import GameStateToggle from './game-state-toggle';
 import { gamePropType } from '../../prop-types';
@@ -13,20 +14,22 @@ function GameTableRow({ username, game }) {
 			<td>{game.version}</td>
 			<td>{game.createdAt.toLocaleString()}</td>
 			<td>{game.creator.username}</td>
-			<td>
-				<GameStateToggle
-					gameId={game.id}
-					isOnline={game.isOnline}
-					disabled={disabled}
-					setDisabled={setDisabled}
-				/>
+			<td className={styles.controls}>
 				{game.creator.username === username && (
-					<DeleteGameButton
-						gameId={game.id}
-						name={game.name}
-						disabled={disabled}
-						setDisabled={setDisabled}
-					/>
+					<>
+						<GameStateToggle
+							gameId={game.id}
+							isOnline={game.isOnline}
+							disabled={disabled}
+							setDisabled={setDisabled}
+						/>
+						<DeleteGameButton
+							gameId={game.id}
+							name={game.name}
+							disabled={disabled}
+							setDisabled={setDisabled}
+						/>
+					</>
 				)}
 			</td>
 		</tr>
