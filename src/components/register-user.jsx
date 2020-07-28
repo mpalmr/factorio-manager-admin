@@ -9,7 +9,7 @@ import {
 	Button,
 	Form,
 } from 'react-bootstrap';
-import TextField from './form/text-field';
+import FormControl from './form-control';
 import { AuthContext } from '../providers/authentication';
 
 export const REGISTRATION_MUTATION = gql`
@@ -65,7 +65,7 @@ function RegisterUser() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Row>
 							<Col sm={6}>
-								<TextField
+								<FormControl
 									id="register-username"
 									name="username"
 									label="Username"
@@ -78,7 +78,7 @@ function RegisterUser() {
 						</Row>
 						<Row>
 							<Col sm={6}>
-								<TextField
+								<FormControl
 									id="register-password"
 									name="password"
 									label="Password"
@@ -89,7 +89,7 @@ function RegisterUser() {
 								/>
 							</Col>
 							<Col sm={6}>
-								<TextField
+								<FormControl
 									id="register-confirm-password"
 									name="confirmPassword"
 									label="Confirm Password"

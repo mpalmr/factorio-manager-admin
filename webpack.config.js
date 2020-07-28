@@ -30,7 +30,7 @@ const base = {
 				}],
 			},
 			{
-				test: /\.s(c|a)ss$/,
+				test: /\.s?css$/,
 				exclude: /node_modules/,
 				use: [
 					MiniCssExtractPlugin.loader,
@@ -39,7 +39,10 @@ const base = {
 						options: {
 							sourceMap: true,
 							importLoaders: 1,
-							modules: { localIdentName: '[path][name]_[local]--[hash:base64:5]' },
+							modules: {
+								exportLocalsConvention: 'camelCase',
+								localIdentName: '[path][name]_[local]--[hash:base64:5]',
+							},
 						},
 					},
 					{

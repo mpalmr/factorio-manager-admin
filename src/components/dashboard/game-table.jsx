@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { gql } from '@apollo/client';
 import { Table } from 'react-bootstrap';
 import DeleteGameButton from './delete-game-button';
 import { AuthContext } from '../../providers/authentication';
@@ -54,5 +55,20 @@ GameTable.propTypes = {
 	})),
 };
 GameTable.defaultProps = { games: [] };
+
+GameTable.fragments = {
+	game: gql`
+		fragment GameTableGame on Game {
+			id
+			name
+			version
+			createdAt
+			creator {
+				id
+				username
+			}
+		}
+	`,
+};
 
 export default GameTable;

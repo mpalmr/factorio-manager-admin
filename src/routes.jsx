@@ -6,6 +6,7 @@ import App from './components/app';
 import Dashboard from './components/dashboard';
 import Login from './components/login';
 import RegisterUser from './components/register-user';
+import CreateGame from './components/create-game';
 import NotFound from './components/not-found';
 
 const history = createBrowserHistory();
@@ -23,6 +24,9 @@ function Routes() {
 					</Route>
 					<Route exact path="/register">
 						<RegisterUser />
+					</Route>
+					<Route exact path="/game/new">
+						<CreateGame />
 					</Route>
 					<Route>
 						<NotFound />
