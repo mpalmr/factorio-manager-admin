@@ -18,28 +18,35 @@ const GAMES_QUERY = gql`
 	}
 `;
 
-function DeleteGameButton({ id, name }) {
+function DeleteGameButton({
+	gameId,
+	name,
+	disabled,
+	setDisabled,
+}) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const [deleteGame, { loading }] = useMutation(DELETE_GAME_MUTATION, {
-		variables: { gameId: id },
+	const [deleteGame] = useMutation(DELETE_GAME_MUTATION, {
+		variables: { gameId },
 		update(cache) {
 			const games = cache.readQuery({ query: GAMES_QUERY })?.games || [];
 			return cache.writeQuery({
 				query: GAMES_QUERY,
-				data: { games: games.filter(game => game.id !== id) },
+				data: { games: games.filter(game => game.id !== gameId) },
 			});
 		},
 	});
 
 	async function onConfirm() {
-		await deleteGame();
-		setIsModalOpen(false);
+		return deleteGame().finally(() => {
+			setIsModalOpen(false);
+			setDisabled(false);
+		});
 	}
 
 	return (
 		<>
-			<Button variant="danger" size="sm" disabled={loading} onClick={() => setIsModalOpen(true)}>
+			<Button variant="danger" size="sm" disabled={disabled} onClick={() => setIsModalOpen(true)}>
 				Delete
 			</Button>
 			<ConfirmationModal
@@ -55,8 +62,10 @@ function DeleteGameButton({ id, name }) {
 }
 
 DeleteGameButton.propTypes = {
-	id: PropTypes.string.isRequired,
+	gameId: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
+	disabled: PropTypes.bool.isRequired,
+	setDisabled: PropTypes.func.isRequired,
 };
 
 export default DeleteGameButton;

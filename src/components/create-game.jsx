@@ -16,6 +16,7 @@ const NEW_GAME_FRAGMENT = gql`
 	fragment NewGame on Game {
 		id
 		name
+		isOnline
 		version
 		createdAt
 		creator {
@@ -36,8 +37,8 @@ export const CREATE_GAME_MUTATION = gql`
 		createGame(game: $game) {
 			...NewGame
 		}
-		${NEW_GAME_FRAGMENT}
 	}
+	${NEW_GAME_FRAGMENT}
 `;
 
 function CreateGame() {

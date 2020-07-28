@@ -11,6 +11,7 @@ export const DASHBOARD_QUERY = gql`
 		games {
 			id
 			name
+			isOnline
 			version
 			createdAt
 			creator {
