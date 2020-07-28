@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import Select from 'react-select';
@@ -30,13 +30,17 @@ export const AVAILABLE_VERSIONS_QUERY = gql`
 export const CREATE_GAME_MUTATION = gql`
 	mutation CreateGame($game: CreateGameInput!) {
 		createGame(game: $game) {
-			...NewGame
+			id
+			name
+			version
+			createdAt
 		}
 	}
 	${NEW_GAME_FRAGMENT}
 `;
 
 function CreateGame() {
+	const [version, setVersion] = useState('latest');
 	const { data } = useQuery(AVAILABLE_VERSIONS_QUERY);
 
 	const [create] = useMutation(CREATE_GAME_MUTATION, {
@@ -65,16 +69,24 @@ function CreateGame() {
 
 	async function onSubmit(values, { resetForm }) {
 		const result = await create({
-			variables: { game: values },
+			variables: {
+				game: {
+					...values,
+					version,
+				},
+			},
 		});
 		resetForm();
 		return result;
 	}
 
+	const availableVersionOptions = (data?.availableVersions || [])
+		.map(a => ({ value: a, label: a }));
+
 	return (
 		<Container>
 			<Formik
-				initialValues={{ name: '', version: null }}
+				initialValues={{ name: '' }}
 				validate={validate}
 				onSubmit={onSubmit}
 			>
@@ -98,16 +110,22 @@ function CreateGame() {
 								/>
 							</Col>
 							<Col md={6}>
-								<FormControl
-									id="create-game-version"
-									component={Select}
-									name="version"
-									label="Version"
-									disabled={isSubmitting}
-									touched={!!touched.version}
-									error={errors.version}
-									options={data?.availableVersions}
-								/>
+								{availableVersionOptions.length === 0 ? (
+									<p>Loading...</p>
+								) : (
+									<FormControl
+										id="create-game-version"
+										component={Select}
+										name="version"
+										label="Version"
+										disabled={isSubmitting}
+										touched={!!touched.version}
+										error={errors.version}
+										options={availableVersionOptions}
+										defaultValue={availableVersionOptions[0]}
+										onChange={setVersion}
+									/>
+								)}
 							</Col>
 						</Row>
 						<div className={styles.lowerControls}>
@@ -127,7 +145,5 @@ function CreateGame() {
 		</Container>
 	);
 }
-
-CreateGame.fragments = { newGame: NEW_GAME_FRAGMENT };
 
 export default CreateGame;

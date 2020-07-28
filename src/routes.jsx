@@ -16,18 +16,18 @@ function Routes() {
 		<Router history={history}>
 			<App>
 				<Switch>
-					<PrivateRoute exact path="/">
+					<Route exact path="/">
 						<Dashboard />
-					</PrivateRoute>
+					</Route>
 					<Route exact path="/login">
 						<Login />
 					</Route>
 					<Route exact path="/register">
 						<RegisterUser />
 					</Route>
-					<Route exact path="/game/new">
+					<PrivateRoute exact path="/game/new">
 						<CreateGame />
-					</Route>
+					</PrivateRoute>
 					<Route>
 						<NotFound />
 					</Route>
