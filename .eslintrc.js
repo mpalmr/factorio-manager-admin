@@ -15,6 +15,7 @@ module.exports = {
 		'consistent-return': 0,
 		'react/jsx-indent-props': 0,
 		'react/jsx-props-no-spreading': 0,
+		'react/jsx-one-expression-per-line': 0,
 	},
 	overrides: [
 		{

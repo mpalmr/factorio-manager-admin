@@ -4,12 +4,12 @@ import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../providers/authentication';
 
 function PrivateRoute({ children, ...props }) {
-	const { isLoggedIn } = useContext(AuthContext);
+	const { username } = useContext(AuthContext);
 
 	return (
 		<Route
 			{...props}
-			render={() => (isLoggedIn ? children : (
+			render={() => (username ? children : (
 				<Redirect to="/login" />
 			))}
 		/>

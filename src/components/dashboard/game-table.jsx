@@ -27,7 +27,7 @@ function GameTable({ games }) {
 						<td>{game.createdAt.toLocaleString()}</td>
 						<td>{game.creator.username}</td>
 						<td>
-							<DeleteGameButton id={game.id} />
+							<DeleteGameButton id={game.id} name={game.name} />
 						</td>
 					</tr>
 				))}
@@ -44,7 +44,7 @@ GameTable.propTypes = {
 		createdAt: PropTypes.instanceOf(Date).isRequired,
 		creator: PropTypes.shape({
 			id: PropTypes.string.isRequired,
-			name: PropTypes.string.isRequired,
+			username: PropTypes.string.isRequired,
 		}).isRequired,
 	})),
 };

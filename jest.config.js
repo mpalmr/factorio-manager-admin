@@ -10,4 +10,7 @@ module.exports = {
 		'@testing-library/jest-dom/extend-expect',
 		'<rootDir>/jest.setup.js',
 	],
+	moduleNameMapper: {
+		'\\.s?css': '<rootDir>/__mocks__/style.js',
+	},
 };

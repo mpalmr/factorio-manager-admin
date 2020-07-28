@@ -5,7 +5,7 @@ import { AuthContext } from '../providers/authentication';
 import LogoutButton from './logout-button';
 
 function Header() {
-	const { isLoggedIn, logout } = useContext(AuthContext);
+	const { username, logout } = useContext(AuthContext);
 
 	return (
 		<Navbar as="header" bg="light" expand="lg">
@@ -18,7 +18,7 @@ function Header() {
 					</Nav.Item>
 				</Nav>
 				<Nav>
-					{isLoggedIn ? (
+					{username ? (
 						<Nav.Item>
 							<LogoutButton logout={logout} />
 						</Nav.Item>
