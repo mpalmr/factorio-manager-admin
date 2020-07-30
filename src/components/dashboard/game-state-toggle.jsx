@@ -5,13 +5,19 @@ import { Button } from 'react-bootstrap';
 
 const START_GAME_MUTATION = gql`
 	mutation StartGame($gameId: ID!) {
-		startGame(gameId: $gameId)
+		startGame(gameId: $gameId) {
+			id
+			isOnline
+		}
 	}
 `;
 
 const STOP_GAME_MUTATION = gql`
 	mutation StopGame($gameId: ID!) {
-		stopGame(gameId: $gameId)
+		stopGame(gameId: $gameId) {
+			id
+			isOnline
+		}
 	}
 `;
 
