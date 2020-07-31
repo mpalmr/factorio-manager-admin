@@ -4,9 +4,15 @@ import { MockedProvider } from '@apollo/client/testing';
 import DeleteGameButton, { DELETE_GAME_MUTATION } from '../delete-game-button';
 
 test('Clicking on button shows modal', async () => {
+	const setDisabled = jest.fn();
 	const { getByText, queryByText } = render((
 		<MockedProvider>
-			<DeleteGameButton id="mockGameId" name="mockGameName" />
+			<DeleteGameButton
+				gameId="mockGameId"
+				name="mockGameName"
+				disabled={false}
+				setDisabled={setDisabled}
+			/>
 		</MockedProvider>
 	));
 
@@ -16,9 +22,15 @@ test('Clicking on button shows modal', async () => {
 });
 
 test('Cancel closes modal', async () => {
+	const setDisabled = jest.fn();
 	const { getByText, queryByText } = render((
 		<MockedProvider>
-			<DeleteGameButton id="mockGameId" name="mockGameName" />
+			<DeleteGameButton
+				gameId="mockGameId"
+				name="mockGameName"
+				disabled={false}
+				setDisabled={setDisabled}
+			/>
 		</MockedProvider>
 	));
 
@@ -29,6 +41,7 @@ test('Cancel closes modal', async () => {
 });
 
 test('Successful deletion', async () => {
+	const setDisabled = jest.fn();
 	const { getByText, queryByText } = render((
 		<MockedProvider
 			mocks={[{
@@ -39,12 +52,19 @@ test('Successful deletion', async () => {
 				result: { deleteGame: null },
 			}]}
 		>
-			<DeleteGameButton id="mockGameId" name="mockGameName" />
+			<DeleteGameButton
+				gameId="mockGameId"
+				name="mockGameName"
+				disabled={false}
+				setDisabled={setDisabled}
+			/>
 		</MockedProvider>
 	));
 
 	fireEvent.click(getByText('Delete'));
 	await waitFor(() => expect(queryByText('Confirm')).toBeInTheDocument());
 	fireEvent.click(getByText('Confirm'));
-	return waitFor(() => expect(queryByText('Confirm')).not.toBeInTheDocument());
+	expect(setDisabled).not.toHaveBeenCalled();
+	await waitFor(() => expect(queryByText('Confirm')).not.toBeInTheDocument());
+	expect(setDisabled).toHaveBeenCalledWith(false);
 });
