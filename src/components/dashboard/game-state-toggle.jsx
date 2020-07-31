@@ -45,7 +45,7 @@ function GameStateToggle({
 		<Button
 			size="sm"
 			disabled={disabled}
-			variant={isOnline ? 'danger' : 'success'}
+			variant={isOnline ? 'warning' : 'success'}
 			onClick={handleClick}
 		>
 			{isOnline ? 'Stop' : 'Start'}

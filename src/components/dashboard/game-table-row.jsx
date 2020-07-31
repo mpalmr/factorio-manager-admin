@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Badge } from 'react-bootstrap';
 import styles from './game-table-row.scss';
 import DeleteGameButton from './delete-game-button';
 import GameStateToggle from './game-state-toggle';
@@ -11,6 +12,11 @@ function GameTableRow({ username, game }) {
 	return (
 		<tr>
 			<th>{game.name}</th>
+			<td>
+				<Badge variant={game.isOnline ? 'success' : 'danger'}>
+					{game.isOnline ? 'Online' : 'Offline'}
+				</Badge>
+			</td>
 			<td>{game.version}</td>
 			<td>{game.createdAt.toLocaleString()}</td>
 			<td>{game.creator.username}</td>

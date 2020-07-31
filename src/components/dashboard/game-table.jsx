@@ -9,10 +9,11 @@ function GameTable({ games }) {
 	const { username } = useContext(AuthContext);
 
 	return (
-		<Table>
+		<Table bordered>
 			<thead>
 				<tr>
 					<th>Name</th>
+					<th>Status</th>
 					<th>Version</th>
 					<th>Created At</th>
 					<th>Creator</th>
@@ -22,7 +23,7 @@ function GameTable({ games }) {
 			<tbody>
 				{games.length === 0 ? (
 					<tr>
-						<td colSpan={5}>There are no games currently active.</td>
+						<td colSpan={6}>There are no games currently active.</td>
 					</tr>
 				) : games.map(game => (
 					<GameTableRow key={game.id} username={username} game={game} />
