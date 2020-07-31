@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { gql } from '@apollo/client';
 import { Table } from 'react-bootstrap';
-import DeleteGameButton from './delete-game-button';
+import GameTableRow from './game-table-row';
+import { gamePropType } from '../../prop-types';
 import { AuthContext } from '../../providers/authentication';
 
 function GameTable({ games }) {
 	const { username } = useContext(AuthContext);
 
 	return (
-		<Table>
+		<Table bordered>
 			<thead>
 				<tr>
 					<th>Name</th>
+					<th>Status</th>
 					<th>Version</th>
 					<th>Created At</th>
 					<th>Creator</th>
@@ -22,53 +23,17 @@ function GameTable({ games }) {
 			<tbody>
 				{games.length === 0 ? (
 					<tr>
-						<td colSpan={5}>There are no games currently active.</td>
+						<td colSpan={6}>There are no games currently active.</td>
 					</tr>
 				) : games.map(game => (
-					<tr key={game.id}>
-						<th>{game.name}</th>
-						<td>{game.version}</td>
-						<td>{game.createdAt.toLocaleString()}</td>
-						<td>{game.creator.username}</td>
-						<td>
-							{game.creator.username === username && (
-								<DeleteGameButton id={game.id} name={game.name} />
-							)}
-						</td>
-					</tr>
+					<GameTableRow key={game.id} username={username} game={game} />
 				))}
 			</tbody>
 		</Table>
 	);
 }
 
-GameTable.propTypes = {
-	games: PropTypes.arrayOf(PropTypes.shape({
-		id: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		version: PropTypes.string.isRequired,
-		createdAt: PropTypes.instanceOf(Date).isRequired,
-		creator: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-		}).isRequired,
-	})),
-};
+GameTable.propTypes = { games: PropTypes.arrayOf(gamePropType) };
 GameTable.defaultProps = { games: [] };
-
-GameTable.fragments = {
-	game: gql`
-		fragment GameTableGame on Game {
-			id
-			name
-			version
-			createdAt
-			creator {
-				id
-				username
-			}
-		}
-	`,
-};
 
 export default GameTable;

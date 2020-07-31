@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import Select from 'react-select';
 import {
@@ -11,11 +12,13 @@ import {
 } from 'react-bootstrap';
 import styles from './create-game.scss';
 import FormControl from './form-control';
+import LoadingIndicator from './loading-indicator';
 
 const NEW_GAME_FRAGMENT = gql`
 	fragment NewGame on Game {
 		id
 		name
+		isOnline
 		version
 		createdAt
 		creator {
@@ -36,11 +39,12 @@ export const CREATE_GAME_MUTATION = gql`
 		createGame(game: $game) {
 			...NewGame
 		}
-		${NEW_GAME_FRAGMENT}
 	}
+	${NEW_GAME_FRAGMENT}
 `;
 
 function CreateGame() {
+	const history = useHistory();
 	const [version, setVersion] = useState('latest');
 	const { data } = useQuery(AVAILABLE_VERSIONS_QUERY);
 
@@ -68,7 +72,7 @@ function CreateGame() {
 		return errors;
 	}
 
-	async function onSubmit(values, { resetForm }) {
+	async function onSubmit(values) {
 		const result = await create({
 			variables: {
 				game: {
@@ -77,7 +81,7 @@ function CreateGame() {
 				},
 			},
 		});
-		resetForm();
+		history.push('/');
 		return result;
 	}
 
@@ -112,7 +116,7 @@ function CreateGame() {
 							</Col>
 							<Col md={6}>
 								{availableVersionOptions.length === 0 ? (
-									<p>Loading...</p>
+									<LoadingIndicator />
 								) : (
 									<FormControl
 										id="create-game-version"
@@ -124,7 +128,7 @@ function CreateGame() {
 										error={errors.version}
 										options={availableVersionOptions}
 										defaultValue={availableVersionOptions[0]}
-										onChange={setVersion}
+										onChange={({ value }) => setVersion(value)}
 									/>
 								)}
 							</Col>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import CreateGame, { AVAILABLE_VERSIONS_QUERY, CREATE_GAME_MUTATION } from '../create-game';
 
 const mocks = [
@@ -21,6 +23,7 @@ const mocks = [
 					name: 'Sup',
 					version: 'latest',
 					createdAt: new Date('2020-01-01'),
+					isOnline: false,
 					creator: {
 						id: '1',
 						username: 'ayyo',
@@ -45,11 +48,18 @@ const mocks = [
 	},
 ];
 
+let history;
+beforeEach(() => {
+	history = createMemoryHistory();
+});
+
 describe('Validation', () => {
 	test('name', async () => {
 		const { getByLabelText, getByText } = render((
 			<MockedProvider mocks={mocks}>
-				<CreateGame />
+				<Router history={history}>
+					<CreateGame />
+				</Router>
 			</MockedProvider>
 		));
 		const createGameButton = getByText('Create Game');
@@ -69,7 +79,9 @@ describe('Validation', () => {
 test('Successful submission', async () => {
 	const { getByLabelText, getByText } = render((
 		<MockedProvider mocks={mocks}>
-			<CreateGame />
+			<Router history={history}>
+				<CreateGame />
+			</Router>
 		</MockedProvider>
 	));
 

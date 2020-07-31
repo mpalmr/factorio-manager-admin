@@ -8,7 +8,7 @@ test('show notice if there are no games', () => {
 	const { container } = render((
 		<MockedProvider>
 			<AuthContext.Provider value={{ username: 'UncoolPerson' }}>
-				<GameTable />
+				<GameTable games={[]} />
 			</AuthContext.Provider>
 		</MockedProvider>
 	));
@@ -30,6 +30,7 @@ test('Only shows controls when you own the game', () => {
 							id: '1',
 							name: 'LubridermMadness',
 							version: 'latest',
+							isOnline: false,
 							createdAt: new Date('2020-01-01'),
 							creator: {
 								id: '1',
@@ -41,6 +42,7 @@ test('Only shows controls when you own the game', () => {
 							name: 'JumpingOnly',
 							version: 'latest',
 							createdAt: new Date('2020-01-01'),
+							isOnline: true,
 							creator: {
 								id: '2',
 								username: 'UncoolPerson',
