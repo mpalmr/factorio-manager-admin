@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from 'react-bootstrap';
+import cn from 'classnames';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Badge, Button } from 'react-bootstrap';
 import styles from './game-table-row.scss';
 import DeleteGameButton from './delete-game-button';
 import GameStateToggle from './game-state-toggle';
@@ -8,6 +10,17 @@ import { gamePropType } from '../../prop-types';
 
 function GameTableRow({ username, game }) {
 	const [disabled, setDisabled] = useState(false);
+	const [didCopy, setDidCopy] = useState(null);
+
+	function handleCopyUrl() {
+		setDidCopy(setTimeout(() => {
+			setDidCopy(null);
+		}, 150));
+	}
+
+	useEffect(() => () => {
+		if (didCopy) clearTimeout(didCopy);
+	}, []);
 
 	return (
 		<tr>
@@ -21,6 +34,11 @@ function GameTableRow({ username, game }) {
 			<td>{game.createdAt.toLocaleString()}</td>
 			<td>{game.creator.username}</td>
 			<td className={styles.controls}>
+				<CopyToClipboard text={`factorio:${game.port}`} onCopy={handleCopyUrl}>
+					<Button className={cn(styles.copy, didCopy && styles.didCopy)} size="sm" variant="info">
+						Copy URL
+					</Button>
+				</CopyToClipboard>
 				{game.creator.username === username && (
 					<>
 						<GameStateToggle

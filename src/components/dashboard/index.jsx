@@ -13,6 +13,7 @@ export const DASHBOARD_QUERY = gql`
 			name
 			isOnline
 			version
+			port
 			createdAt
 			creator {
 				id

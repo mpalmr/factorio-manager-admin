@@ -6,6 +6,7 @@ export const gamePropType = PropTypes.shape({
 	name: PropTypes.string.isRequired,
 	isOnline: PropTypes.bool.isRequired,
 	version: PropTypes.string.isRequired,
+	port: PropTypes.number.isRequired,
 	createdAt: PropTypes.instanceOf(Date).isRequired,
 	creator: PropTypes.shape({
 		id: PropTypes.string.isRequired,
