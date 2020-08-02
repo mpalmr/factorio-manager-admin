@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { gql, useMutation } from '@apollo/client';
 import { Button } from 'react-bootstrap';
 
-const START_GAME_MUTATION = gql`
+export const START_GAME_MUTATION = gql`
 	mutation StartGame($gameId: ID!) {
 		startGame(gameId: $gameId) {
 			id
@@ -12,7 +12,7 @@ const START_GAME_MUTATION = gql`
 	}
 `;
 
-const STOP_GAME_MUTATION = gql`
+export const STOP_GAME_MUTATION = gql`
 	mutation StopGame($gameId: ID!) {
 		stopGame(gameId: $gameId) {
 			id

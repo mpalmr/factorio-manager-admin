@@ -20,6 +20,7 @@ const NEW_GAME_FRAGMENT = gql`
 		name
 		isOnline
 		version
+		port
 		createdAt
 		creator {
 			id
@@ -69,6 +70,11 @@ function CreateGame() {
 		if (!values.name) errors.name = 'Required';
 		else if (values.name.length < 3) errors.name = 'Name must be at least three characters';
 
+		const isPortInRange = values.port < 1024 || values.port > 65535;
+		if (values.port && Number.isInteger(values.port) && isPortInRange) {
+			errors.port = 'Must be a whole number between 2014 and 65535';
+		}
+
 		return errors;
 	}
 
@@ -94,6 +100,7 @@ function CreateGame() {
 				initialValues={{ name: '' }}
 				validate={validate}
 				onSubmit={onSubmit}
+				noValidate
 			>
 				{({
 					isSubmitting,

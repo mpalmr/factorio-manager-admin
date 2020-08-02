@@ -1,3 +1,11 @@
 .controls button:not(:last-child) {
 	margin-right: .6rem;
 }
+
+.copy {
+	transition: background-color .15 linear;
+}
+
+.did-copy.did-copy {
+	background-color: #444;
+}

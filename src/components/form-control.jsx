@@ -7,8 +7,10 @@ function FormControl({
 	id,
 	component,
 	label,
+	type,
 	touched,
 	error,
+	onChange,
 	...props
 }) {
 	return (
@@ -16,9 +18,14 @@ function FormControl({
 			{label && (
 				<Form.Label>{label}</Form.Label>
 			)}
-			<Field as={component} aria-describedby={`${id}-help`} {...props} />
+			<Field
+				as={component}
+				type={type}
+				aria-describedby={`${id}-help`}
+				{...props}
+			/>
 			{touched && error && (
-				<Form.Text className="text-danger" muted>{error}</Form.Text>
+				<Form.Control.Feedback className="text-danger" muted>{error}</Form.Control.Feedback>
 			)}
 		</Form.Group>
 	);
@@ -29,13 +36,17 @@ FormControl.propTypes = {
 	component: PropTypes.elementType,
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string,
+	type: PropTypes.oneOf(['text', 'password', 'number']),
 	touched: PropTypes.bool.isRequired,
 	error: PropTypes.string,
+	onChange: PropTypes.func,
 };
 FormControl.defaultProps = {
 	component: Form.Control,
 	label: null,
+	type: null,
 	error: null,
+	onChange: null,
 };
 
 export default FormControl;
