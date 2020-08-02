@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
 	Container,
 	Row,
@@ -18,8 +19,14 @@ export const LOGIN_MUTATION = gql`
 	}
 `;
 
+const validationSchema = Yup.object().shape({
+	username: Yup.string().required('Required'),
+	password: Yup.string().required('Required'),
+}).required();
+
 function Login() {
 	const { username, login } = useContext(AuthContext);
+	if (username) return <Redirect to="/" />;
 
 	const [loginReq] = useMutation(LOGIN_MUTATION, {
 		onCompleted({ createAuthToken }) {
@@ -35,20 +42,11 @@ function Login() {
 		login(authToken, values.username);
 	}
 
-	function validate(values) {
-		const errors = {};
-		if (!values.username) errors.username = 'Required';
-		if (!values.password) errors.password = 'Required';
-		return errors;
-	}
-
-	return username ? (
-		<Redirect to="/" />
-	) : (
+	return (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '' }}
-				validate={validate}
+				validationSchema={validationSchema}
 				onSubmit={onSubmit}
 			>
 				{({

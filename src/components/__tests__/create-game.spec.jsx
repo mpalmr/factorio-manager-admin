@@ -5,6 +5,8 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import CreateGame, { AVAILABLE_VERSIONS_QUERY, CREATE_GAME_MUTATION } from '../create-game';
 
+jest.mock('../create-game.scss');
+
 const mocks = [
 	{
 		request: {

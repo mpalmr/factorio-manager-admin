@@ -20,6 +20,7 @@ export const REGISTRATION_MUTATION = gql`
 
 function RegisterUser() {
 	const { username, login } = useContext(AuthContext);
+	if (username) return <Redirect to="/" />;
 	const [register] = useMutation(REGISTRATION_MUTATION);
 
 	async function onSubmit({ confirmPassword, ...user }) {
@@ -47,9 +48,7 @@ function RegisterUser() {
 		return errors;
 	}
 
-	return username ? (
-		<Redirect to="/" />
-	) : (
+	return (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '', confirmPassword: '' }}
