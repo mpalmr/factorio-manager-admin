@@ -13,21 +13,7 @@ import {
 import styles from './create-game.scss';
 import FormControl from './form-control';
 import LoadingIndicator from './loading-indicator';
-
-const NEW_GAME_FRAGMENT = gql`
-	fragment NewGame on Game {
-		id
-		name
-		isOnline
-		version
-		port
-		createdAt
-		creator {
-			id
-			username
-		}
-	}
-`;
+import { GAME_COMMON_FRAGMENT } from '../fragments';
 
 export const AVAILABLE_VERSIONS_QUERY = gql`
 	query AvailableVersions {
@@ -38,10 +24,10 @@ export const AVAILABLE_VERSIONS_QUERY = gql`
 export const CREATE_GAME_MUTATION = gql`
 	mutation CreateGame($game: CreateGameInput!) {
 		createGame(game: $game) {
-			...NewGame
+			...GameCommon
 		}
 	}
-	${NEW_GAME_FRAGMENT}
+	${GAME_COMMON_FRAGMENT}
 `;
 
 function CreateGame() {
@@ -55,7 +41,7 @@ function CreateGame() {
 				fields: {
 					games(existingGames = []) {
 						return existingGames.concat(cache.writeFragment({
-							fragment: NEW_GAME_FRAGMENT,
+							fragment: GAME_COMMON_FRAGMENT,
 							data: createGame,
 						}));
 					},

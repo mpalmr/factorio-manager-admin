@@ -7,6 +7,7 @@ import Dashboard from './components/dashboard';
 import Login from './components/login';
 import RegisterUser from './components/register-user';
 import CreateGame from './components/create-game';
+import EditGame from './components/edit-game';
 import NotFound from './components/not-found';
 
 const history = createBrowserHistory();
@@ -27,6 +28,9 @@ function Routes() {
 					</Route>
 					<PrivateRoute exact path="/game/new">
 						<CreateGame />
+					</PrivateRoute>
+					<PrivateRoute exact path="/game/:id">
+						<EditGame />
 					</PrivateRoute>
 					<Route>
 						<NotFound />

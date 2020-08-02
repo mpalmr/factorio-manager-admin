@@ -1,4 +1,4 @@
-.controls button:not(:last-child) {
+.controls > :not(:last-child) {
 	margin-right: .6rem;
 }
 

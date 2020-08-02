@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Badge, Button } from 'react-bootstrap';
 import styles from './game-table-row.scss';
@@ -47,6 +48,9 @@ function GameTableRow({ username, game }) {
 							disabled={disabled}
 							setDisabled={setDisabled}
 						/>
+						<Button as={Link} to={`/game/${game.id}`} size="sm" variant="secondary">
+							Edit
+						</Button>
 						<DeleteGameButton
 							gameId={game.id}
 							name={game.name}

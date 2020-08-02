@@ -5,22 +5,15 @@ import { Button, Container } from 'react-bootstrap';
 import styles from './index.scss';
 import GameTable from './game-table';
 import LoadingIndicator from '../loading-indicator';
+import { GAME_COMMON_FRAGMENT } from '../../fragments';
 
 export const DASHBOARD_QUERY = gql`
 	query DashboardQuery {
 		games {
-			id
-			name
-			isOnline
-			version
-			port
-			createdAt
-			creator {
-				id
-				username
-			}
+			...GameCommon
 		}
 	}
+	${GAME_COMMON_FRAGMENT}
 `;
 
 function Dashboard() {
