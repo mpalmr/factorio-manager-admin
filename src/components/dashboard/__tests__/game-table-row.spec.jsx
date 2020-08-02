@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+	render,
+	fireEvent,
+	waitFor,
+	act,
+} from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import GameTableRow from '../game-table-row';
 import { START_GAME_MUTATION, STOP_GAME_MUTATION } from '../game-state-toggle';
@@ -31,13 +36,13 @@ const mocks = [
 	},
 ];
 
-test.skip('Shows controls if user owns game', () => {
-	const { rerender, queryByText } = render((
+test('Do not show controls if user does not owns game', () => {
+	const { queryByText } = render((
 		<MockedProvider mocks={mocks}>
 			<table>
 				<tbody>
 					<GameTableRow
-						username="SwagSwanson"
+						username="FFFF"
 						game={{
 							id: '1',
 							name: 'RadGame',
@@ -47,7 +52,7 @@ test.skip('Shows controls if user owns game', () => {
 							createdAt: new Date('2020-01-01'),
 							creator: {
 								id: 'mockUserId',
-								username: 'NotSwagSwanson',
+								username: 'NotFFFF',
 							},
 						}}
 					/>
@@ -55,16 +60,19 @@ test.skip('Shows controls if user owns game', () => {
 			</table>
 		</MockedProvider>
 	));
-	expect(queryByText('Copy URL')).toBeInTheDocument();
-	expect(queryByText('Stop')).not.toBeInTheDocument();
-	expect(queryByText('Delete')).not.toBeInTheDocument();
 
-	rerender((
+	expect(queryByText('Copy URL')).toBeInTheDocument();
+	expect(queryByText('Start')).toBeNull();
+	expect(queryByText('Delete')).toBeNull();
+});
+
+test('Show controls if user does own game', () => {
+	const { queryByText } = render((
 		<MockedProvider mocks={mocks}>
 			<table>
 				<tbody>
 					<GameTableRow
-						username="SwagSwanson"
+						username="FFFF"
 						game={{
 							id: '1',
 							name: 'RadGame',
@@ -74,7 +82,7 @@ test.skip('Shows controls if user owns game', () => {
 							createdAt: new Date('2020-01-01'),
 							creator: {
 								id: 'mockUserId',
-								username: 'SwagSwanson',
+								username: 'FFFF',
 							},
 						}}
 					/>
@@ -82,8 +90,9 @@ test.skip('Shows controls if user owns game', () => {
 			</table>
 		</MockedProvider>
 	));
+
 	expect(queryByText('Copy URL')).toBeInTheDocument();
-	expect(queryByText('Stop')).toBeInTheDocument();
+	expect(queryByText('Start')).toBeInTheDocument();
 	expect(queryByText('Delete')).toBeInTheDocument();
 });
 
@@ -120,7 +129,7 @@ describe('Status', () => {
 	});
 
 	test.skip('Stop', async () => {
-		const { getByText, queryByText } = render((
+		const { getByText } = render((
 			<MockedProvider mocks={mocks}>
 				<table>
 					<tbody>
