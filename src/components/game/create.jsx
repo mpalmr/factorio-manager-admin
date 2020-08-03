@@ -10,10 +10,10 @@ import {
 	Row,
 	Col,
 } from 'react-bootstrap';
-import styles from './create-game.scss';
-import FormControl from './form-control';
-import LoadingIndicator from './loading-indicator';
-import { GAME_COMMON_FRAGMENT } from '../fragments';
+import styles from './create.scss';
+import FormControl from '../form-control';
+import LoadingIndicator from '../loading-indicator';
+import { GAME_COMMON_FRAGMENT } from '../../fragments';
 
 export const AVAILABLE_VERSIONS_QUERY = gql`
 	query AvailableVersions {

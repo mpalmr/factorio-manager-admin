@@ -1,9 +1,9 @@
 import React from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import LoadingIndicator from './loading-indicator';
-import { GAME_COMMON_FRAGMENT } from '../fragments';
-import { gamePropType } from '../prop-types';
+import LoadingIndicator from '../loading-indicator';
+import { GAME_COMMON_FRAGMENT } from '../../fragments';
+import { gamePropType } from '../../prop-types';
 
 const GAME_QUERY = gql`
 	query GameToEdit($gameId: ID!) {
