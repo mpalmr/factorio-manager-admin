@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import React from 'react';
+import { gql, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
-import Select from 'react-select';
 import {
 	Form,
 	Button,
@@ -11,15 +10,9 @@ import {
 	Col,
 } from 'react-bootstrap';
 import styles from './create.scss';
-import FormControl from '../form-control';
-import LoadingIndicator from '../loading-indicator';
+import VersionField from './fields/version';
+import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';
-
-export const AVAILABLE_VERSIONS_QUERY = gql`
-	query AvailableVersions {
-		availableVersions
-	}
-`;
 
 export const CREATE_GAME_MUTATION = gql`
 	mutation CreateGame($game: CreateGameInput!) {
@@ -32,8 +25,6 @@ export const CREATE_GAME_MUTATION = gql`
 
 function CreateGame() {
 	const history = useHistory();
-	const [version, setVersion] = useState('latest');
-	const { data } = useQuery(AVAILABLE_VERSIONS_QUERY);
 
 	const [create] = useMutation(CREATE_GAME_MUTATION, {
 		update(cache, { data: { createGame } }) {
@@ -66,27 +57,22 @@ function CreateGame() {
 
 	async function onSubmit(values) {
 		const result = await create({
-			variables: {
-				game: {
-					...values,
-					version,
-				},
-			},
+			variables: { game: values },
 		});
 		history.push('/');
 		return result;
 	}
 
-	const availableVersionOptions = (data?.availableVersions || [])
-		.map(a => ({ value: a, label: a }));
-
 	return (
 		<Container>
 			<Formik
-				initialValues={{ name: '' }}
+				noValidate
 				validate={validate}
 				onSubmit={onSubmit}
-				noValidate
+				initialValues={{
+					name: '',
+					version: '',
+				}}
 			>
 				{({
 					isSubmitting,
@@ -97,7 +83,7 @@ function CreateGame() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Row>
 							<Col md={6}>
-								<FormControl
+								<TextField
 									id="create-game-name"
 									name="name"
 									label="Name"
@@ -108,22 +94,14 @@ function CreateGame() {
 								/>
 							</Col>
 							<Col md={6}>
-								{availableVersionOptions.length === 0 ? (
-									<LoadingIndicator />
-								) : (
-									<FormControl
-										id="create-game-version"
-										component={Select}
-										name="version"
-										label="Version"
-										disabled={isSubmitting}
-										touched={!!touched.version}
-										error={errors.version}
-										options={availableVersionOptions}
-										defaultValue={availableVersionOptions[0]}
-										onChange={({ value }) => setVersion(value)}
-									/>
-								)}
+								<VersionField
+									id="create-game-version"
+									name="version"
+									label="Version"
+									disabled={isSubmitting}
+									touched={!!touched.version}
+									error={errors.version}
+								/>
 							</Col>
 						</Row>
 						<div className={styles.lowerControls}>
