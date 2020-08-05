@@ -2,6 +2,7 @@ import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
 	Form,
 	Button,
@@ -10,6 +11,7 @@ import {
 	Col,
 } from 'react-bootstrap';
 import styles from './create.scss';
+import { sharedValidation } from './validation';
 import VersionField from './fields/version';
 import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';
@@ -41,20 +43,6 @@ function CreateGame() {
 		},
 	});
 
-	function validate(values) {
-		const errors = {};
-
-		if (!values.name) errors.name = 'Required';
-		else if (values.name.length < 3) errors.name = 'Name must be at least three characters';
-
-		const isPortInRange = values.port < 1024 || values.port > 65535;
-		if (values.port && Number.isInteger(values.port) && isPortInRange) {
-			errors.port = 'Must be a whole number between 2014 and 65535';
-		}
-
-		return errors;
-	}
-
 	async function onSubmit(values) {
 		const result = await create({
 			variables: { game: values },
@@ -66,13 +54,14 @@ function CreateGame() {
 	return (
 		<Container>
 			<Formik
-				noValidate
-				validate={validate}
-				onSubmit={onSubmit}
+				validationSchema={Yup.object().shape({
+					...sharedValidation,
+				}).required()}
 				initialValues={{
 					name: '',
 					version: '',
 				}}
+				onSubmit={onSubmit}
 			>
 				{({
 					isSubmitting,
@@ -89,8 +78,7 @@ function CreateGame() {
 									label="Name"
 									maxLength={40}
 									disabled={isSubmitting}
-									touched={!!touched.name}
-									error={errors.name}
+									error={touched.name && errors.name}
 								/>
 							</Col>
 							<Col md={6}>
@@ -99,19 +87,12 @@ function CreateGame() {
 									name="version"
 									label="Version"
 									disabled={isSubmitting}
-									touched={!!touched.version}
-									error={errors.version}
+									error={touched.version && errors.version}
 								/>
 							</Col>
 						</Row>
 						<div className={styles.lowerControls}>
-							<Button
-								type="submit"
-								variant="success"
-								size="lg"
-								disabled={isSubmitting}
-								onClick={handleSubmit}
-							>
+							<Button type="submit" variant="success" disabled={isSubmitting}>
 								Create Game
 							</Button>
 						</div>
