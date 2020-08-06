@@ -42,7 +42,22 @@ function EditGame() {
 		variables: { gameId: routeParams.id },
 	});
 
-	const [update] = useMutation(UPDATE_GAME_MUTATION);
+	const [update] = useMutation(UPDATE_GAME_MUTATION, {
+		async update(cache, { data: { updateGame } }) {
+			cache.modify({
+				fields: {
+					games(existingGames = []) {
+						return existingGames.filter(game => (game.id !== updateGame.id
+							? game
+							: cache.writeFragment({
+								fragment: GAME_COMMON_FRAGMENT,
+								data: updateGame,
+							})));
+					},
+				},
+			});
+		},
+	});
 
 	async function onSubmit(values) {
 		return update({

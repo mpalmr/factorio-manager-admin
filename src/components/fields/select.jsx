@@ -6,7 +6,9 @@ function SelectField({ name, options, ...props }) {
 	return (
 		<Field as="select" name={name} {...props}>
 			{options.map(option => (
-				<option value={option.value}>{option.label}</option>
+				<option key={option.value} value={option.value}>
+					{option.label}
+				</option>
 			))}
 		</Field>
 	);
