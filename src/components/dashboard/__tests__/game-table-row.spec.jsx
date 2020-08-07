@@ -6,6 +6,8 @@ import {
 	act,
 } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import GameTableRow from '../game-table-row';
 import { START_GAME_MUTATION, STOP_GAME_MUTATION } from '../game-state-toggle';
 
@@ -36,28 +38,35 @@ const mocks = [
 	},
 ];
 
+let history;
+beforeEach(() => {
+	history = createMemoryHistory();
+});
+
 test('Do not show controls if user does not owns game', () => {
 	const { queryByText } = render((
 		<MockedProvider mocks={mocks}>
-			<table>
-				<tbody>
-					<GameTableRow
-						username="FFFF"
-						game={{
-							id: '1',
-							name: 'RadGame',
-							version: 'latest',
-							isOnline: false,
-							port: 5000,
-							createdAt: new Date('2020-01-01'),
-							creator: {
-								id: 'mockUserId',
-								username: 'NotFFFF',
-							},
-						}}
-					/>
-				</tbody>
-			</table>
+			<Router history={history}>
+				<table>
+					<tbody>
+						<GameTableRow
+							username="FFFF"
+							game={{
+								id: '1',
+								name: 'RadGame',
+								version: 'latest',
+								isOnline: false,
+								port: 5000,
+								createdAt: new Date('2020-01-01'),
+								creator: {
+									id: 'mockUserId',
+									username: 'NotFFFF',
+								},
+							}}
+						/>
+					</tbody>
+				</table>
+			</Router>
 		</MockedProvider>
 	));
 
@@ -69,25 +78,27 @@ test('Do not show controls if user does not owns game', () => {
 test('Show controls if user does own game', () => {
 	const { queryByText } = render((
 		<MockedProvider mocks={mocks}>
-			<table>
-				<tbody>
-					<GameTableRow
-						username="FFFF"
-						game={{
-							id: '1',
-							name: 'RadGame',
-							version: 'latest',
-							isOnline: false,
-							port: 5000,
-							createdAt: new Date('2020-01-01'),
-							creator: {
-								id: 'mockUserId',
-								username: 'FFFF',
-							},
-						}}
-					/>
-				</tbody>
-			</table>
+			<Router history={history}>
+				<table>
+					<tbody>
+						<GameTableRow
+							username="FFFF"
+							game={{
+								id: '1',
+								name: 'RadGame',
+								version: 'latest',
+								isOnline: false,
+								port: 5000,
+								createdAt: new Date('2020-01-01'),
+								creator: {
+									id: 'mockUserId',
+									username: 'FFFF',
+								},
+							}}
+						/>
+					</tbody>
+				</table>
+			</Router>
 		</MockedProvider>
 	));
 
@@ -100,25 +111,27 @@ describe('Status', () => {
 	test.skip('Start', async () => {
 		const { getByText, queryByText } = render((
 			<MockedProvider mocks={mocks}>
-				<table>
-					<tbody>
-						<GameTableRow
-							username="mockName"
-							game={{
-								id: '1',
-								name: 'RadGame',
-								version: 'latest',
-								isOnline: false,
-								port: 5000,
-								createdAt: new Date('2020-01-01'),
-								creator: {
-									id: 'mockUserId',
-									username: 'mockName',
-								},
-							}}
-						/>
-					</tbody>
-				</table>
+				<Router history={history}>
+					<table>
+						<tbody>
+							<GameTableRow
+								username="mockName"
+								game={{
+									id: '1',
+									name: 'RadGame',
+									version: 'latest',
+									isOnline: false,
+									port: 5000,
+									createdAt: new Date('2020-01-01'),
+									creator: {
+										id: 'mockUserId',
+										username: 'mockName',
+									},
+								}}
+							/>
+						</tbody>
+					</table>
+				</Router>
 			</MockedProvider>
 		));
 
@@ -131,25 +144,27 @@ describe('Status', () => {
 	test.skip('Stop', async () => {
 		const { getByText } = render((
 			<MockedProvider mocks={mocks}>
-				<table>
-					<tbody>
-						<GameTableRow
-							username="mockName"
-							game={{
-								id: '1',
-								name: 'RadGame',
-								version: 'latest',
-								isOnline: true,
-								port: 5000,
-								createdAt: new Date('2020-01-01'),
-								creator: {
-									id: 'mockUserId',
-									username: 'mockName',
-								},
-							}}
-						/>
-					</tbody>
-				</table>
+				<Router history={history}>
+					<table>
+						<tbody>
+							<GameTableRow
+								username="mockName"
+								game={{
+									id: '1',
+									name: 'RadGame',
+									version: 'latest',
+									isOnline: true,
+									port: 5000,
+									createdAt: new Date('2020-01-01'),
+									creator: {
+										id: 'mockUserId',
+										username: 'mockName',
+									},
+								}}
+							/>
+						</tbody>
+					</table>
+				</Router>
 			</MockedProvider>
 		));
 
