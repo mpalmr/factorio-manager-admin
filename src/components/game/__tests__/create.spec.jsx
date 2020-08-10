@@ -3,7 +3,8 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import CreateGame, { AVAILABLE_VERSIONS_QUERY, CREATE_GAME_MUTATION } from '../create-game';
+import CreateGame, { CREATE_GAME_MUTATION } from '../create';
+import { VERSIONS_QUERY } from '../fields/version';
 
 jest.mock('../create-game.scss');
 
@@ -35,7 +36,7 @@ const mocks = [
 		},
 	},
 	{
-		request: { query: AVAILABLE_VERSIONS_QUERY },
+		request: { query: VERSIONS_QUERY },
 		result: {
 			data: {
 				availableVersions: [

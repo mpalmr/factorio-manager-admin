@@ -76,6 +76,7 @@ const base = {
 const environments = {
 	development: {
 		mode: 'development',
+		devtool: 'eval-source-map',
 		devServer: {
 			contentBase: path.resolve('dist'),
 			historyApiFallback: true,

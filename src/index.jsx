@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { render } from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
 import './styles.scss';
@@ -7,9 +7,11 @@ import Routes from './routes';
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(
-		<ApolloProvider client={client}>
-			<Routes />
-		</ApolloProvider>,
+		<StrictMode>
+			<ApolloProvider client={client}>
+				<Routes />
+			</ApolloProvider>
+		</StrictMode>,
 		document.getElementById('root'),
 	);
 });
