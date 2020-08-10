@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { gql, useMutation } from '@apollo/client';
 import { Button } from 'react-bootstrap';
+import { FaPowerOff } from 'react-icons/fa';
 
 export const START_GAME_MUTATION = gql`
 	mutation StartGame($gameId: ID!) {
@@ -47,8 +48,9 @@ function GameStateToggle({
 			disabled={disabled}
 			variant={isOnline ? 'warning' : 'success'}
 			onClick={handleClick}
+			aria-label={isOnline ? 'Stop' : 'Start'}
 		>
-			{isOnline ? 'Stop' : 'Start'}
+			<FaPowerOff />
 		</Button>
 	);
 }

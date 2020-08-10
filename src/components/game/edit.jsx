@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import styles from './create.scss';
 import VersionField from './fields/version';
-import { sharedValidation} from './validation';
+import { sharedValidation } from './validation';
 import LoadingIndicator from '../loading-indicator';
 import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';

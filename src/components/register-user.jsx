@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
 	Container,
 	Row,
@@ -11,6 +12,15 @@ import {
 } from 'react-bootstrap';
 import FormControl from './form-control';
 import { AuthContext } from '../providers/authentication';
+
+const validationSchema = Yup.object().shape({
+	username: Yup.string().required().email().min(3),
+	password: Yup.string().required().min(6),
+	confirmPassword: Yup.string()
+		.required()
+		.min(6)
+		.equals(Yup.ref('password'), 'Passwords must match'),
+}).required();
 
 export const REGISTRATION_MUTATION = gql`
 	mutation RegisterUser($user: CredentialsInput!) {
@@ -30,29 +40,11 @@ function RegisterUser() {
 		login(user.username);
 	}
 
-	function validate(values) {
-		const errors = {};
-
-		if (!values.username) errors.username = 'Required';
-		else if (values.username.length < 3) {
-			errors.username = 'Username must be at least three characters';
-		}
-
-		if (!values.password) errors.password = 'Required';
-		else if (values.password.length < 6) errors.password = 'Must be at least 6 characters';
-		else if (!values.confirmPassword) errors.confirmPassword = 'Required';
-		else if (values.password !== values.confirmPassword) {
-			errors.confirmPassword = 'Passwords do not match';
-		}
-
-		return errors;
-	}
-
 	return (
 		<Container>
 			<Formik
 				initialValues={{ username: '', password: '', confirmPassword: '' }}
-				validate={validate}
+				validationSchema={validationSchema}
 				onSubmit={onSubmit}
 			>
 				{({
