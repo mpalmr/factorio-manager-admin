@@ -17,6 +17,10 @@ import LoadingIndicator from '../loading-indicator';
 import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';
 
+const validationSchema = Yup.object().shape({
+	...sharedValidation,
+}).required();
+
 export const GAME_QUERY = gql`
 	query GameToEdit($gameId: ID!) {
 		game(gameId: $gameId) {
@@ -61,7 +65,12 @@ function EditGame() {
 
 	async function onSubmit(values) {
 		return update({
-			variables: { game: values },
+			variables: {
+				game: {
+					id: routeParams.id,
+					name: values.name,
+				},
+			},
 		});
 	}
 
@@ -72,12 +81,10 @@ function EditGame() {
 	) : (
 		<Container>
 			<Formik
-				validationSchema={Yup.object().shape({
-					...sharedValidation,
-				}).required()}
+				validationSchema={validationSchema}
 				initialValues={{
-					name: '',
-					version: '',
+					name: game.name,
+					version: game.version,
 				}}
 				onSubmit={onSubmit}
 			>
@@ -94,7 +101,6 @@ function EditGame() {
 									id="edit-game-name"
 									name="name"
 									label="Name"
-									value={game.name}
 									maxLength={40}
 									disabled={isSubmitting}
 									error={touched.name && errors.name}
@@ -105,7 +111,6 @@ function EditGame() {
 									id="edit-game-version"
 									name="version"
 									label="Version"
-									value={game.version}
 									disabled={isSubmitting}
 									error={touched.version && errors.version}
 								/>
