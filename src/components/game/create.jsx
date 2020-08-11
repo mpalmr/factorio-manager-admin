@@ -70,6 +70,7 @@ function CreateGame() {
 					handleSubmit,
 				}) => (
 					<Form noValidate onSubmit={handleSubmit}>
+						{console.log(touched, errors)}
 						<Row>
 							<Col md={6}>
 								<TextField

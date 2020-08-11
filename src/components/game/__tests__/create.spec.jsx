@@ -58,7 +58,7 @@ beforeEach(() => {
 
 describe('Validation', () => {
 	test('name', async () => {
-		const { getByLabelText, getByText } = render((
+		const { getByLabelText, getByText, queryByText } = render((
 			<MockedProvider mocks={mocks}>
 				<Router history={history}>
 					<CreateGame />
@@ -68,13 +68,13 @@ describe('Validation', () => {
 		const createGameButton = getByText('Create Game');
 
 		fireEvent.click(createGameButton);
-		await waitFor(() => expect(getByText('Required')).toBeInTheDocument());
+		await waitFor(() => expect(queryByText('Required')).toBeInTheDocument());
 
 		fireEvent.change(getByLabelText('	'), {
 			target: { value: 'ay' },
 		});
 		fireEvent.click(createGameButton);
-		return waitFor(() => expect(getByText('Name must be at least three characters'))
+		return waitFor(() => expect(queryByText('Must be at least three characters'))
 			.toBeInTheDocument());
 	});
 });

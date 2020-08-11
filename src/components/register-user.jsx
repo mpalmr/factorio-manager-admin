@@ -14,10 +14,10 @@ import FormControl from './form-control';
 import { AuthContext } from '../providers/authentication';
 
 const validationSchema = Yup.object().shape({
-	username: Yup.string().required().email().min(3),
-	password: Yup.string().required().min(6),
+	username: Yup.string().required('Required').email().min(3),
+	password: Yup.string().required('Required').min(6),
 	confirmPassword: Yup.string()
-		.required()
+		.required('Required')
 		.oneOf([Yup.ref('password'), null], 'Passwords must match'),
 }).required();
 
@@ -53,6 +53,7 @@ function RegisterUser() {
 					handleSubmit,
 				}) => (
 					<Form noValidate onSubmit={handleSubmit}>
+						{console.log(errors)}
 						<Row>
 							<Col sm={6}>
 								<FormControl
