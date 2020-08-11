@@ -11,14 +11,12 @@ import {
 	Col,
 } from 'react-bootstrap';
 import styles from './create.scss';
-import { sharedValidation } from './validation';
+import validation from './validation';
 import VersionField from './fields/version';
 import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';
 
-const validationSchema = Yup.object().shape({
-	...sharedValidation,
-}).required();
+const validationSchema = Yup.object().shape(validation).required();
 
 export const CREATE_GAME_MUTATION = gql`
 	mutation CreateGame($game: CreateGameInput!) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import PrivateRoute from './components/private-route';
 import App from './components/app';
 import Dashboard from './components/dashboard';
@@ -10,11 +9,9 @@ import CreateGame from './components/game/create';
 import EditGame from './components/game/edit';
 import NotFound from './components/not-found';
 
-const history = createBrowserHistory();
-
 function Routes() {
 	return (
-		<Router history={history}>
+		<Router>
 			<App>
 				<Switch>
 					<Route exact path="/">

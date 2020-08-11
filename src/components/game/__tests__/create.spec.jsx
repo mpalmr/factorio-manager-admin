@@ -70,7 +70,7 @@ describe('Validation', () => {
 		fireEvent.click(createGameButton);
 		await waitFor(() => expect(getByText('Required')).toBeInTheDocument());
 
-		fireEvent.change(getByLabelText('Name'), {
+		fireEvent.change(getByLabelText('	'), {
 			target: { value: 'ay' },
 		});
 		fireEvent.click(createGameButton);

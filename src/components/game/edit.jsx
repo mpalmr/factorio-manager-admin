@@ -12,14 +12,12 @@ import {
 } from 'react-bootstrap';
 import styles from './create.scss';
 import VersionField from './fields/version';
-import { sharedValidation } from './validation';
+import validation from './validation';
 import LoadingIndicator from '../loading-indicator';
 import { TextField } from '../fields';
 import { GAME_COMMON_FRAGMENT } from '../../fragments';
 
-const validationSchema = Yup.object().shape({
-	...sharedValidation,
-}).required();
+const validationSchema = Yup.object().shape(validation).required();
 
 export const GAME_QUERY = gql`
 	query GameToEdit($gameId: ID!) {

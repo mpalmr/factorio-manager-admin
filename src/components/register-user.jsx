@@ -18,8 +18,7 @@ const validationSchema = Yup.object().shape({
 	password: Yup.string().required().min(6),
 	confirmPassword: Yup.string()
 		.required()
-		.min(6)
-		.equals(Yup.ref('password'), 'Passwords must match'),
+		.oneOf([Yup.ref('password'), null], 'Passwords must match'),
 }).required();
 
 export const REGISTRATION_MUTATION = gql`
